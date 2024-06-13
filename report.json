@@ -1,0 +1,332 @@
+{
+  "config": {
+    "configFile": "D:\\Work Station\\UnidevGo\\TransportedLabs\\TransportedLabs Tamplate\\playwright.config.ts",
+    "rootDir": "D:/Work Station/UnidevGo/TransportedLabs/TransportedLabs Tamplate",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "reporter": [
+      [
+        "json",
+        {
+          "outputFile": "report.json"
+        }
+      ],
+      [
+        "html",
+        {
+          "open": "never"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 15000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "D:/Work Station/UnidevGo/TransportedLabs/TransportedLabs Tamplate/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "id": "",
+        "name": "",
+        "testDir": "D:/Work Station/UnidevGo/TransportedLabs/TransportedLabs Tamplate",
+        "testIgnore": [],
+        "testMatch": [
+          "your.test.ts",
+          "pageAccessibility.spec.ts"
+        ],
+        "timeout": 3000000
+      }
+    ],
+    "shard": null,
+    "updateSnapshots": "missing",
+    "version": "1.41.2",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "tests\\pageAccessibility.spec.ts",
+      "file": "tests/pageAccessibility.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Test Accessibility By Page",
+          "file": "tests/pageAccessibility.spec.ts",
+          "line": 10,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Check Page accessibility",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 3000000,
+                  "annotations": [
+                    {
+                      "type": "Go To",
+                      "description": "Go to: https://www.saucedemo.com"
+                    },
+                    {
+                      "type": "Assert",
+                      "description": "Check accessibility for page: CustomPage"
+                    },
+                    {
+                      "type": "1.landmark-one-main",
+                      "description": "Fix all of the following:\n  Document does not have a main landmark"
+                    },
+                    {
+                      "type": "2.page-has-heading-one",
+                      "description": "Fix all of the following:\n  Page must have a level-one heading"
+                    },
+                    {
+                      "type": "3.region",
+                      "description": "Fix any of the following:\n  Some page content is not contained by landmarks"
+                    },
+                    {
+                      "type": "4.region",
+                      "description": "Fix any of the following:\n  Some page content is not contained by landmarks"
+                    },
+                    {
+                      "type": "5.region",
+                      "description": "Fix any of the following:\n  Some page content is not contained by landmarks"
+                    },
+                    {
+                      "type": "6.region",
+                      "description": "Fix any of the following:\n  Some page content is not contained by landmarks"
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "status": "failed",
+                      "duration": 17307,
+                      "error": {
+                        "message": "Error: 1.landmark-one-main - Fix all of the following:\n  Document does not have a main landmark\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeNull\u001b[2m()\u001b[22m\n\nReceived: \u001b[31m\"landmark-one-main\"\u001b[39m",
+                        "stack": "Error: 1.landmark-one-main - Fix all of the following:\n  Document does not have a main landmark\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeNull\u001b[2m()\u001b[22m\n\nReceived: \u001b[31m\"landmark-one-main\"\u001b[39m\n    at D:\\Work Station\\UnidevGo\\TransportedLabs\\TransportedLabs Tamplate\\utils\\accessibility\\AccessibilityHelper.ts:69:59\n    at AccessibilityHelper.addAnnotations (D:\\Work Station\\UnidevGo\\TransportedLabs\\TransportedLabs Tamplate\\utils\\accessibility\\AccessibilityHelper.ts:54:9)\n    at D:\\Work Station\\UnidevGo\\TransportedLabs\\TransportedLabs Tamplate\\utils\\accessibility\\AccessibilityHelper.ts:41:13\n    at AccessibilityHelper.checkAccessibility (D:\\Work Station\\UnidevGo\\TransportedLabs\\TransportedLabs Tamplate\\utils\\accessibility\\AccessibilityHelper.ts:33:9)\n    at D:\\Work Station\\UnidevGo\\TransportedLabs\\TransportedLabs Tamplate\\tests\\pageAccessibility.spec.ts:24:9",
+                        "location": {
+                          "file": "D:\\Work Station\\UnidevGo\\TransportedLabs\\TransportedLabs Tamplate\\utils\\accessibility\\AccessibilityHelper.ts",
+                          "column": 59,
+                          "line": 69
+                        },
+                        "snippet": "\u001b[90m   at \u001b[39mutils\\accessibility\\AccessibilityHelper.ts:69\n\n\u001b[0m \u001b[90m 67 |\u001b[39m                 \u001b[90m// eslint-disable-next-line playwright/no-wait-for-timeout\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 68 |\u001b[39m                 \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mwaitForTimeout(pause)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[0m\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 69 |\u001b[39m                 expect\u001b[33m.\u001b[39msoft(axeError\u001b[33m.\u001b[39mid\u001b[33m,\u001b[39m stepDescription)\u001b[33m.\u001b[39mtoBeNull()\u001b[33m;\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m    |\u001b[39m                                                           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 70 |\u001b[39m             }\u001b[0m\n\u001b[0m \u001b[90m 71 |\u001b[39m         })\u001b[33m;\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 72 |\u001b[39m     }\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "D:\\Work Station\\UnidevGo\\TransportedLabs\\TransportedLabs Tamplate\\utils\\accessibility\\AccessibilityHelper.ts",
+                            "column": 59,
+                            "line": 69
+                          },
+                          "message": "Error: 1.landmark-one-main - Fix all of the following:\n  Document does not have a main landmark\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeNull\u001b[2m()\u001b[22m\n\nReceived: \u001b[31m\"landmark-one-main\"\u001b[39m\n\n\u001b[90m   at \u001b[39mutils\\accessibility\\AccessibilityHelper.ts:69\n\n\u001b[0m \u001b[90m 67 |\u001b[39m                 \u001b[90m// eslint-disable-next-line playwright/no-wait-for-timeout\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 68 |\u001b[39m                 \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mwaitForTimeout(pause)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[0m\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 69 |\u001b[39m                 expect\u001b[33m.\u001b[39msoft(axeError\u001b[33m.\u001b[39mid\u001b[33m,\u001b[39m stepDescription)\u001b[33m.\u001b[39mtoBeNull()\u001b[33m;\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m    |\u001b[39m                                                           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 70 |\u001b[39m             }\u001b[0m\n\u001b[0m \u001b[90m 71 |\u001b[39m         })\u001b[33m;\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 72 |\u001b[39m     }\u001b[0m\n\n\u001b[2m    at D:\\Work Station\\UnidevGo\\TransportedLabs\\TransportedLabs Tamplate\\utils\\accessibility\\AccessibilityHelper.ts:69:59\u001b[22m\n\u001b[2m    at AccessibilityHelper.addAnnotations (D:\\Work Station\\UnidevGo\\TransportedLabs\\TransportedLabs Tamplate\\utils\\accessibility\\AccessibilityHelper.ts:54:9)\u001b[22m\n\u001b[2m    at D:\\Work Station\\UnidevGo\\TransportedLabs\\TransportedLabs Tamplate\\utils\\accessibility\\AccessibilityHelper.ts:41:13\u001b[22m\n\u001b[2m    at AccessibilityHelper.checkAccessibility (D:\\Work Station\\UnidevGo\\TransportedLabs\\TransportedLabs Tamplate\\utils\\accessibility\\AccessibilityHelper.ts:33:9)\u001b[22m\n\u001b[2m    at D:\\Work Station\\UnidevGo\\TransportedLabs\\TransportedLabs Tamplate\\tests\\pageAccessibility.spec.ts:24:9\u001b[22m"
+                        },
+                        {
+                          "location": {
+                            "file": "D:\\Work Station\\UnidevGo\\TransportedLabs\\TransportedLabs Tamplate\\utils\\accessibility\\AccessibilityHelper.ts",
+                            "column": 59,
+                            "line": 69
+                          },
+                          "message": "Error: 2.page-has-heading-one - Fix all of the following:\n  Page must have a level-one heading\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeNull\u001b[2m()\u001b[22m\n\nReceived: \u001b[31m\"page-has-heading-one\"\u001b[39m\n\n\u001b[90m   at \u001b[39mutils\\accessibility\\AccessibilityHelper.ts:69\n\n\u001b[0m \u001b[90m 67 |\u001b[39m                 \u001b[90m// eslint-disable-next-line playwright/no-wait-for-timeout\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 68 |\u001b[39m                 \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mwaitForTimeout(pause)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[0m\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 69 |\u001b[39m                 expect\u001b[33m.\u001b[39msoft(axeError\u001b[33m.\u001b[39mid\u001b[33m,\u001b[39m stepDescription)\u001b[33m.\u001b[39mtoBeNull()\u001b[33m;\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m    |\u001b[39m                                                           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 70 |\u001b[39m             }\u001b[0m\n\u001b[0m \u001b[90m 71 |\u001b[39m         })\u001b[33m;\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 72 |\u001b[39m     }\u001b[0m\n\n\u001b[2m    at D:\\Work Station\\UnidevGo\\TransportedLabs\\TransportedLabs Tamplate\\utils\\accessibility\\AccessibilityHelper.ts:69:59\u001b[22m\n\u001b[2m    at AccessibilityHelper.addAnnotations (D:\\Work Station\\UnidevGo\\TransportedLabs\\TransportedLabs Tamplate\\utils\\accessibility\\AccessibilityHelper.ts:54:9)\u001b[22m\n\u001b[2m    at D:\\Work Station\\UnidevGo\\TransportedLabs\\TransportedLabs Tamplate\\utils\\accessibility\\AccessibilityHelper.ts:41:13\u001b[22m\n\u001b[2m    at AccessibilityHelper.checkAccessibility (D:\\Work Station\\UnidevGo\\TransportedLabs\\TransportedLabs Tamplate\\utils\\accessibility\\AccessibilityHelper.ts:33:9)\u001b[22m\n\u001b[2m    at D:\\Work Station\\UnidevGo\\TransportedLabs\\TransportedLabs Tamplate\\tests\\pageAccessibility.spec.ts:24:9\u001b[22m"
+                        },
+                        {
+                          "location": {
+                            "file": "D:\\Work Station\\UnidevGo\\TransportedLabs\\TransportedLabs Tamplate\\utils\\accessibility\\AccessibilityHelper.ts",
+                            "column": 59,
+                            "line": 69
+                          },
+                          "message": "Error: 3.region - Fix any of the following:\n  Some page content is not contained by landmarks\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeNull\u001b[2m()\u001b[22m\n\nReceived: \u001b[31m\"region\"\u001b[39m\n\n\u001b[90m   at \u001b[39mutils\\accessibility\\AccessibilityHelper.ts:69\n\n\u001b[0m \u001b[90m 67 |\u001b[39m                 \u001b[90m// eslint-disable-next-line playwright/no-wait-for-timeout\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 68 |\u001b[39m                 \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mwaitForTimeout(pause)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[0m\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 69 |\u001b[39m                 expect\u001b[33m.\u001b[39msoft(axeError\u001b[33m.\u001b[39mid\u001b[33m,\u001b[39m stepDescription)\u001b[33m.\u001b[39mtoBeNull()\u001b[33m;\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m    |\u001b[39m                                                           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 70 |\u001b[39m             }\u001b[0m\n\u001b[0m \u001b[90m 71 |\u001b[39m         })\u001b[33m;\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 72 |\u001b[39m     }\u001b[0m\n\n\u001b[2m    at D:\\Work Station\\UnidevGo\\TransportedLabs\\TransportedLabs Tamplate\\utils\\accessibility\\AccessibilityHelper.ts:69:59\u001b[22m\n\u001b[2m    at AccessibilityHelper.addAnnotations (D:\\Work Station\\UnidevGo\\TransportedLabs\\TransportedLabs Tamplate\\utils\\accessibility\\AccessibilityHelper.ts:54:9)\u001b[22m\n\u001b[2m    at D:\\Work Station\\UnidevGo\\TransportedLabs\\TransportedLabs Tamplate\\utils\\accessibility\\AccessibilityHelper.ts:41:13\u001b[22m\n\u001b[2m    at AccessibilityHelper.checkAccessibility (D:\\Work Station\\UnidevGo\\TransportedLabs\\TransportedLabs Tamplate\\utils\\accessibility\\AccessibilityHelper.ts:33:9)\u001b[22m\n\u001b[2m    at D:\\Work Station\\UnidevGo\\TransportedLabs\\TransportedLabs Tamplate\\tests\\pageAccessibility.spec.ts:24:9\u001b[22m"
+                        },
+                        {
+                          "location": {
+                            "file": "D:\\Work Station\\UnidevGo\\TransportedLabs\\TransportedLabs Tamplate\\utils\\accessibility\\AccessibilityHelper.ts",
+                            "column": 59,
+                            "line": 69
+                          },
+                          "message": "Error: 4.region - Fix any of the following:\n  Some page content is not contained by landmarks\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeNull\u001b[2m()\u001b[22m\n\nReceived: \u001b[31m\"region\"\u001b[39m\n\n\u001b[90m   at \u001b[39mutils\\accessibility\\AccessibilityHelper.ts:69\n\n\u001b[0m \u001b[90m 67 |\u001b[39m                 \u001b[90m// eslint-disable-next-line playwright/no-wait-for-timeout\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 68 |\u001b[39m                 \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mwaitForTimeout(pause)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[0m\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 69 |\u001b[39m                 expect\u001b[33m.\u001b[39msoft(axeError\u001b[33m.\u001b[39mid\u001b[33m,\u001b[39m stepDescription)\u001b[33m.\u001b[39mtoBeNull()\u001b[33m;\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m    |\u001b[39m                                                           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 70 |\u001b[39m             }\u001b[0m\n\u001b[0m \u001b[90m 71 |\u001b[39m         })\u001b[33m;\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 72 |\u001b[39m     }\u001b[0m\n\n\u001b[2m    at D:\\Work Station\\UnidevGo\\TransportedLabs\\TransportedLabs Tamplate\\utils\\accessibility\\AccessibilityHelper.ts:69:59\u001b[22m\n\u001b[2m    at AccessibilityHelper.addAnnotations (D:\\Work Station\\UnidevGo\\TransportedLabs\\TransportedLabs Tamplate\\utils\\accessibility\\AccessibilityHelper.ts:54:9)\u001b[22m\n\u001b[2m    at D:\\Work Station\\UnidevGo\\TransportedLabs\\TransportedLabs Tamplate\\utils\\accessibility\\AccessibilityHelper.ts:41:13\u001b[22m\n\u001b[2m    at AccessibilityHelper.checkAccessibility (D:\\Work Station\\UnidevGo\\TransportedLabs\\TransportedLabs Tamplate\\utils\\accessibility\\AccessibilityHelper.ts:33:9)\u001b[22m\n\u001b[2m    at D:\\Work Station\\UnidevGo\\TransportedLabs\\TransportedLabs Tamplate\\tests\\pageAccessibility.spec.ts:24:9\u001b[22m"
+                        },
+                        {
+                          "location": {
+                            "file": "D:\\Work Station\\UnidevGo\\TransportedLabs\\TransportedLabs Tamplate\\utils\\accessibility\\AccessibilityHelper.ts",
+                            "column": 59,
+                            "line": 69
+                          },
+                          "message": "Error: 5.region - Fix any of the following:\n  Some page content is not contained by landmarks\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeNull\u001b[2m()\u001b[22m\n\nReceived: \u001b[31m\"region\"\u001b[39m\n\n\u001b[90m   at \u001b[39mutils\\accessibility\\AccessibilityHelper.ts:69\n\n\u001b[0m \u001b[90m 67 |\u001b[39m                 \u001b[90m// eslint-disable-next-line playwright/no-wait-for-timeout\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 68 |\u001b[39m                 \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mwaitForTimeout(pause)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[0m\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 69 |\u001b[39m                 expect\u001b[33m.\u001b[39msoft(axeError\u001b[33m.\u001b[39mid\u001b[33m,\u001b[39m stepDescription)\u001b[33m.\u001b[39mtoBeNull()\u001b[33m;\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m    |\u001b[39m                                                           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 70 |\u001b[39m             }\u001b[0m\n\u001b[0m \u001b[90m 71 |\u001b[39m         })\u001b[33m;\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 72 |\u001b[39m     }\u001b[0m\n\n\u001b[2m    at D:\\Work Station\\UnidevGo\\TransportedLabs\\TransportedLabs Tamplate\\utils\\accessibility\\AccessibilityHelper.ts:69:59\u001b[22m\n\u001b[2m    at AccessibilityHelper.addAnnotations (D:\\Work Station\\UnidevGo\\TransportedLabs\\TransportedLabs Tamplate\\utils\\accessibility\\AccessibilityHelper.ts:54:9)\u001b[22m\n\u001b[2m    at D:\\Work Station\\UnidevGo\\TransportedLabs\\TransportedLabs Tamplate\\utils\\accessibility\\AccessibilityHelper.ts:41:13\u001b[22m\n\u001b[2m    at AccessibilityHelper.checkAccessibility (D:\\Work Station\\UnidevGo\\TransportedLabs\\TransportedLabs Tamplate\\utils\\accessibility\\AccessibilityHelper.ts:33:9)\u001b[22m\n\u001b[2m    at D:\\Work Station\\UnidevGo\\TransportedLabs\\TransportedLabs Tamplate\\tests\\pageAccessibility.spec.ts:24:9\u001b[22m"
+                        },
+                        {
+                          "location": {
+                            "file": "D:\\Work Station\\UnidevGo\\TransportedLabs\\TransportedLabs Tamplate\\utils\\accessibility\\AccessibilityHelper.ts",
+                            "column": 59,
+                            "line": 69
+                          },
+                          "message": "Error: 6.region - Fix any of the following:\n  Some page content is not contained by landmarks\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeNull\u001b[2m()\u001b[22m\n\nReceived: \u001b[31m\"region\"\u001b[39m\n\n\u001b[90m   at \u001b[39mutils\\accessibility\\AccessibilityHelper.ts:69\n\n\u001b[0m \u001b[90m 67 |\u001b[39m                 \u001b[90m// eslint-disable-next-line playwright/no-wait-for-timeout\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 68 |\u001b[39m                 \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mwaitForTimeout(pause)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[0m\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 69 |\u001b[39m                 expect\u001b[33m.\u001b[39msoft(axeError\u001b[33m.\u001b[39mid\u001b[33m,\u001b[39m stepDescription)\u001b[33m.\u001b[39mtoBeNull()\u001b[33m;\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m    |\u001b[39m                                                           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 70 |\u001b[39m             }\u001b[0m\n\u001b[0m \u001b[90m 71 |\u001b[39m         })\u001b[33m;\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 72 |\u001b[39m     }\u001b[0m\n\n\u001b[2m    at D:\\Work Station\\UnidevGo\\TransportedLabs\\TransportedLabs Tamplate\\utils\\accessibility\\AccessibilityHelper.ts:69:59\u001b[22m\n\u001b[2m    at AccessibilityHelper.addAnnotations (D:\\Work Station\\UnidevGo\\TransportedLabs\\TransportedLabs Tamplate\\utils\\accessibility\\AccessibilityHelper.ts:54:9)\u001b[22m\n\u001b[2m    at D:\\Work Station\\UnidevGo\\TransportedLabs\\TransportedLabs Tamplate\\utils\\accessibility\\AccessibilityHelper.ts:41:13\u001b[22m\n\u001b[2m    at AccessibilityHelper.checkAccessibility (D:\\Work Station\\UnidevGo\\TransportedLabs\\TransportedLabs Tamplate\\utils\\accessibility\\AccessibilityHelper.ts:33:9)\u001b[22m\n\u001b[2m    at D:\\Work Station\\UnidevGo\\TransportedLabs\\TransportedLabs Tamplate\\tests\\pageAccessibility.spec.ts:24:9\u001b[22m"
+                        },
+                        {
+                          "location": {
+                            "file": "D:\\Work Station\\UnidevGo\\TransportedLabs\\TransportedLabs Tamplate\\utils\\accessibility\\AccessibilityHelper.ts",
+                            "column": 89,
+                            "line": 46
+                          },
+                          "message": "Error: Accessibility errors should be 0\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m0\u001b[39m\nReceived: \u001b[31m3\u001b[39m\n\n\u001b[90m   at \u001b[39mutils\\accessibility\\AccessibilityHelper.ts:46\n\n\u001b[0m \u001b[90m 44 |\u001b[39m             \u001b[36mawait\u001b[39m dashboard\u001b[33m.\u001b[39msaveToFile(keyPage\u001b[33m,\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mcurrentAxeErrors)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 45 |\u001b[39m             \u001b[36mawait\u001b[39m dashboard\u001b[33m.\u001b[39mgenerateDashboard()\u001b[33m;\u001b[39m\u001b[0m\n\u001b[0m\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 46 |\u001b[39m             expect\u001b[33m.\u001b[39msoft(accessibilityErrors\u001b[33m.\u001b[39mlength\u001b[33m,\u001b[39m \u001b[32m'Accessibility errors should be 0'\u001b[39m)\u001b[33m.\u001b[39mtoBe(\u001b[35m0\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m    |\u001b[39m                                                                                         \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 47 |\u001b[39m         })\u001b[33m;\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 48 |\u001b[39m     }\u001b[0m\n\u001b[0m \u001b[90m 49 |\u001b[39m\u001b[0m\n\n\u001b[2m    at D:\\Work Station\\UnidevGo\\TransportedLabs\\TransportedLabs Tamplate\\utils\\accessibility\\AccessibilityHelper.ts:46:89\u001b[22m\n\u001b[2m    at AccessibilityHelper.checkAccessibility (D:\\Work Station\\UnidevGo\\TransportedLabs\\TransportedLabs Tamplate\\utils\\accessibility\\AccessibilityHelper.ts:33:9)\u001b[22m\n\u001b[2m    at D:\\Work Station\\UnidevGo\\TransportedLabs\\TransportedLabs Tamplate\\tests\\pageAccessibility.spec.ts:24:9\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Check accessibility for page: CustomPage",
+                          "duration": 14284,
+                          "error": {
+                            "message": "Error: 1.landmark-one-main - Fix all of the following:\n  Document does not have a main landmark\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeNull\u001b[2m()\u001b[22m\n\nReceived: \u001b[31m\"landmark-one-main\"\u001b[39m",
+                            "stack": "Error: 1.landmark-one-main - Fix all of the following:\n  Document does not have a main landmark\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeNull\u001b[2m()\u001b[22m\n\nReceived: \u001b[31m\"landmark-one-main\"\u001b[39m\n    at D:\\Work Station\\UnidevGo\\TransportedLabs\\TransportedLabs Tamplate\\utils\\accessibility\\AccessibilityHelper.ts:69:59\n    at AccessibilityHelper.addAnnotations (D:\\Work Station\\UnidevGo\\TransportedLabs\\TransportedLabs Tamplate\\utils\\accessibility\\AccessibilityHelper.ts:54:9)\n    at D:\\Work Station\\UnidevGo\\TransportedLabs\\TransportedLabs Tamplate\\utils\\accessibility\\AccessibilityHelper.ts:41:13\n    at AccessibilityHelper.checkAccessibility (D:\\Work Station\\UnidevGo\\TransportedLabs\\TransportedLabs Tamplate\\utils\\accessibility\\AccessibilityHelper.ts:33:9)\n    at D:\\Work Station\\UnidevGo\\TransportedLabs\\TransportedLabs Tamplate\\tests\\pageAccessibility.spec.ts:24:9",
+                            "location": {
+                              "file": "D:\\Work Station\\UnidevGo\\TransportedLabs\\TransportedLabs Tamplate\\utils\\accessibility\\AccessibilityHelper.ts",
+                              "column": 59,
+                              "line": 69
+                            },
+                            "snippet": "\u001b[90m   at \u001b[39mutils\\accessibility\\AccessibilityHelper.ts:69\n\n\u001b[0m \u001b[90m 67 |\u001b[39m                 \u001b[90m// eslint-disable-next-line playwright/no-wait-for-timeout\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 68 |\u001b[39m                 \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mwaitForTimeout(pause)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[0m\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 69 |\u001b[39m                 expect\u001b[33m.\u001b[39msoft(axeError\u001b[33m.\u001b[39mid\u001b[33m,\u001b[39m stepDescription)\u001b[33m.\u001b[39mtoBeNull()\u001b[33m;\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m    |\u001b[39m                                                           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 70 |\u001b[39m             }\u001b[0m\n\u001b[0m \u001b[90m 71 |\u001b[39m         })\u001b[33m;\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 72 |\u001b[39m     }\u001b[0m"
+                          },
+                          "steps": [
+                            {
+                              "title": "Add accessibility annotations",
+                              "duration": 13581,
+                              "error": {
+                                "message": "Error: 1.landmark-one-main - Fix all of the following:\n  Document does not have a main landmark\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeNull\u001b[2m()\u001b[22m\n\nReceived: \u001b[31m\"landmark-one-main\"\u001b[39m",
+                                "stack": "Error: 1.landmark-one-main - Fix all of the following:\n  Document does not have a main landmark\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeNull\u001b[2m()\u001b[22m\n\nReceived: \u001b[31m\"landmark-one-main\"\u001b[39m\n    at D:\\Work Station\\UnidevGo\\TransportedLabs\\TransportedLabs Tamplate\\utils\\accessibility\\AccessibilityHelper.ts:69:59\n    at AccessibilityHelper.addAnnotations (D:\\Work Station\\UnidevGo\\TransportedLabs\\TransportedLabs Tamplate\\utils\\accessibility\\AccessibilityHelper.ts:54:9)\n    at D:\\Work Station\\UnidevGo\\TransportedLabs\\TransportedLabs Tamplate\\utils\\accessibility\\AccessibilityHelper.ts:41:13\n    at AccessibilityHelper.checkAccessibility (D:\\Work Station\\UnidevGo\\TransportedLabs\\TransportedLabs Tamplate\\utils\\accessibility\\AccessibilityHelper.ts:33:9)\n    at D:\\Work Station\\UnidevGo\\TransportedLabs\\TransportedLabs Tamplate\\tests\\pageAccessibility.spec.ts:24:9",
+                                "location": {
+                                  "file": "D:\\Work Station\\UnidevGo\\TransportedLabs\\TransportedLabs Tamplate\\utils\\accessibility\\AccessibilityHelper.ts",
+                                  "column": 59,
+                                  "line": 69
+                                },
+                                "snippet": "\u001b[90m   at \u001b[39mutils\\accessibility\\AccessibilityHelper.ts:69\n\n\u001b[0m \u001b[90m 67 |\u001b[39m                 \u001b[90m// eslint-disable-next-line playwright/no-wait-for-timeout\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 68 |\u001b[39m                 \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mwaitForTimeout(pause)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[0m\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 69 |\u001b[39m                 expect\u001b[33m.\u001b[39msoft(axeError\u001b[33m.\u001b[39mid\u001b[33m,\u001b[39m stepDescription)\u001b[33m.\u001b[39mtoBeNull()\u001b[33m;\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m    |\u001b[39m                                                           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 70 |\u001b[39m             }\u001b[0m\n\u001b[0m \u001b[90m 71 |\u001b[39m         })\u001b[33m;\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 72 |\u001b[39m     }\u001b[0m"
+                              },
+                              "steps": [
+                                {
+                                  "title": "Add Description",
+                                  "duration": 55
+                                },
+                                {
+                                  "title": "Add Description",
+                                  "duration": 41
+                                },
+                                {
+                                  "title": "Add Description",
+                                  "duration": 46
+                                },
+                                {
+                                  "title": "Add Description",
+                                  "duration": 60
+                                },
+                                {
+                                  "title": "Add Description",
+                                  "duration": 75
+                                },
+                                {
+                                  "title": "Add Description",
+                                  "duration": 41
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ],
+                      "startTime": "2024-06-13T08:02:59.886Z",
+                      "attachments": [
+                        {
+                          "name": "CustomPage.1.landmark-one-main.png",
+                          "contentType": "image/png",
+                          "path": "D:\\Work Station\\UnidevGo\\TransportedLabs\\TransportedLabs Tamplate\\test-results\\tests-pageAccessibility-Test-Accessibility-By-Page-Check-Page-accessibility\\attachments\\CustomPage-1-landmark-one-main-png-5248242b8c0930a939330f0998f6c1ba0f315fd0.png"
+                        },
+                        {
+                          "name": "CustomPage.2.page-has-heading-one.png",
+                          "contentType": "image/png",
+                          "path": "D:\\Work Station\\UnidevGo\\TransportedLabs\\TransportedLabs Tamplate\\test-results\\tests-pageAccessibility-Test-Accessibility-By-Page-Check-Page-accessibility\\attachments\\CustomPage-2-page-has-heading-one-png-4352c24cf456fbfd27550ef18e48374774c80d3e.png"
+                        },
+                        {
+                          "name": "CustomPage.3.region.png",
+                          "contentType": "image/png",
+                          "path": "D:\\Work Station\\UnidevGo\\TransportedLabs\\TransportedLabs Tamplate\\test-results\\tests-pageAccessibility-Test-Accessibility-By-Page-Check-Page-accessibility\\attachments\\CustomPage-3-region-png-7b62f3580940366c08696be661b9fe7adcb689d9.png"
+                        },
+                        {
+                          "name": "CustomPage.4.region.png",
+                          "contentType": "image/png",
+                          "path": "D:\\Work Station\\UnidevGo\\TransportedLabs\\TransportedLabs Tamplate\\test-results\\tests-pageAccessibility-Test-Accessibility-By-Page-Check-Page-accessibility\\attachments\\CustomPage-4-region-png-e3d35abe1d09f32ad5695773913a2fec5ceb9309.png"
+                        },
+                        {
+                          "name": "CustomPage.5.region.png",
+                          "contentType": "image/png",
+                          "path": "D:\\Work Station\\UnidevGo\\TransportedLabs\\TransportedLabs Tamplate\\test-results\\tests-pageAccessibility-Test-Accessibility-By-Page-Check-Page-accessibility\\attachments\\CustomPage-5-region-png-ca5d789ed81a9b86b9b78c774f02ccfe7942fd8b.png"
+                        },
+                        {
+                          "name": "CustomPage.6.region.png",
+                          "contentType": "image/png",
+                          "path": "D:\\Work Station\\UnidevGo\\TransportedLabs\\TransportedLabs Tamplate\\test-results\\tests-pageAccessibility-Test-Accessibility-By-Page-Check-Page-accessibility\\attachments\\CustomPage-6-region-png-2387206250d31fa6076329b33a27f25b08105ff3.png"
+                        },
+                        {
+                          "name": "PageCustomPage.html",
+                          "contentType": "text/html",
+                          "path": "D:\\Work Station\\UnidevGo\\TransportedLabs\\TransportedLabs Tamplate\\test-results\\tests-pageAccessibility-Test-Accessibility-By-Page-Check-Page-accessibility\\attachments\\PageCustomPage-html-caff6538680c23d32d37e1e3f7dc0f35e7ceb68e.html"
+                        },
+                        {
+                          "name": "AccessibilityDashboard",
+                          "contentType": "text/html",
+                          "path": "D:\\Work Station\\UnidevGo\\TransportedLabs\\TransportedLabs Tamplate\\test-results\\tests-pageAccessibility-Test-Accessibility-By-Page-Check-Page-accessibility\\attachments\\AccessibilityDashboard-82a41326416152a42bf8d35db29792850f9c3995.html"
+                        },
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "D:\\Work Station\\UnidevGo\\TransportedLabs\\TransportedLabs Tamplate\\test-results\\tests-pageAccessibility-Test-Accessibility-By-Page-Check-Page-accessibility\\test-failed-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "D:\\Work Station\\UnidevGo\\TransportedLabs\\TransportedLabs Tamplate\\test-results\\tests-pageAccessibility-Test-Accessibility-By-Page-Check-Page-accessibility\\trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "D:\\Work Station\\UnidevGo\\TransportedLabs\\TransportedLabs Tamplate\\utils\\accessibility\\AccessibilityHelper.ts",
+                        "column": 59,
+                        "line": 69
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "f78149fc47cdb816b468-08d589a3df91e9866eec",
+              "file": "tests/pageAccessibility.spec.ts",
+              "line": 18,
+              "column": 10
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2024-06-13T08:02:58.960Z",
+    "duration": 20175.77,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}
