@@ -1,8 +1,8 @@
-<h1 text-align="center">TransportedLabs-Framework-Template</h1>
+<h1 text-align="center">Playwright-Framework-Template</h1>
 
 ## Introduction
 
-TransportedLabs-Framework-Template - This project is based on Microsoft Playwright, which enables reliable end-to-end testing, Web testing.
+Playwright-Framework-Template - This project is based on Microsoft Playwright, which enables reliable end-to-end testing, Web testing.
 
 
 ## Features
