@@ -36,9 +36,10 @@ The software automation testing lifecycle using Playwright with TypeScript gener
    - **CI/CD Integration:** Integrate the Playwright tests into a CI/CD pipeline to ensure that tests run automatically with every code change, providing quick feedback to the development team.
    - **Continuous Monitoring:** Implement continuous monitoring of the test results to quickly detect any issues in the automation process or the application.
    - **Integration With Slack/Teams:** After completing continuous integration, a report summary is sent to Slack or Teams using an incognito webhook with an attached report URL.
+   ![alt text](image.png)
+   ![alt text](image-1.png)
 
-   ![Slack report](image-1.png)
-   ![Teams report](image-2.png)
+
    
 
 ### 8. **Test Closure**
