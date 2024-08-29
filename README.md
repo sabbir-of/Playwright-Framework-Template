@@ -37,7 +37,7 @@ The software automation testing lifecycle using Playwright with TypeScript gener
    - **Continuous Monitoring:** Implement continuous monitoring of the test results to quickly detect any issues in the automation process or the application.
    - **Integration With Slack/Teams:** After completing continuous integration, a report summary is sent to Slack or Teams using an incognito webhook with an attached report URL.
    ![alt text](image.png)
-   ![alt text](image-1.png)
+   ![alt text](image-2.png)
 
 
    
