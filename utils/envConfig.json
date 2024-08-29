@@ -14,7 +14,7 @@
     "TO_MAIL_ADDRESS": ["to@gmail.com","to1@gmail.com", "to3@gmail.com"]
   },
   "prod": {
-    "BASE_URL": "https://qa-1.testingdxp.com/",
+    "BASE_URL": "https://qa-1..com/",
     "ROUTE": "/admin/#/home/",
     "USERNAME": "standard_user",
     "PASSWORD": "secret_sauce",
@@ -28,7 +28,7 @@
     "TO_MAIL_ADDRESS": ["to@gmail.com","to1@gmail.com", "to3@gmail.com"]
   },
   "stg": {
-    "BASE_URL": "https://qa-1.testingdxp.com///admin/#/",
+    "BASE_URL": "https://qa-1..com///admin/#/",
     "ROUTE": "/admin/#/home/",
     "USERNAME": "standard_user",
     "PASSWORD": "secret_sauce",
