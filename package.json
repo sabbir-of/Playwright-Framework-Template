@@ -12,7 +12,8 @@
     "test:stg": "cross-env NODE_ENV=stg npx playwright test",
     "test:ui": "cross-env NODE_ENV=stg npx playwright test --ui",
     "test:Sequence": "npx playwright test --workers=1 --headed --repeat-each=5",
-    "test:Parallel": "npx playwright test --workers=5 --headed --repeat-each=5"
+    "test:Parallel": "npx playwright test --workers=5 --headed --repeat-each=5",
+    "report": "npx playwright show-report"
   },
   "keywords": [],
   "author": "",
