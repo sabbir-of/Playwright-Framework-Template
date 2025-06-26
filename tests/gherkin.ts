@@ -1,3 +1,67 @@
+
+**Residential Lending QE**
+
+---
+
+### **Automation Tasks**
+
+**Framework Enhancements**
+
+- Refactored and updated the existing automation framework to improve scalability, maintainability, and efficiency.
+- Restructured core modules and optimized test execution flow for better performance.
+
+**Reusable Helper Functions**
+
+- Developed a robust set of helper functions to standardize and simplify common actions across test cases.
+
+**MFA Bypass Implementation**
+
+- Successfully implemented a Multi-Factor Authentication (MFA) bypass mechanism for both the Loan Officer Dashboard (LOD) and Borrower portals.
+- This enhancement enables automated tests to run without manual intervention, significantly improving test reliability.
+
+**Test Case Coverage**
+
+- **Loan Officer Portal**
+    - Completed regression test automation for 65 test cases.
+- **Borrower Portal**
+    - Added sanity test cases covering key workflows and core functionalities.
+    - Completed test automation for 39 test cases.
+
+---
+
+### **Manual Testing Tasks**
+
+- Tested and provided feedback on Borrower Portal and Loan Officer Portal based on Business Release Notes **FR25.2**.
+- Created regression test cases for MST, with **62 test cases completed**.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 TC001 | Create a New Loan Application
 
   Scenario: Create a new loan application with borrower details
