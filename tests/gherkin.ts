@@ -911,4 +911,81 @@ TC003 | Remove an Existing Gift & Grant Entry
 
 
 
+Playwright Automation Framework Enhancements (TypeScript)
+
+To make our automation framework more robust, scalable, and maintainable, we propose the following enhancements:
+
+1. Authentication Setup with Multiple Roles
+
+Implement a structured authentication mechanism that supports different user roles (e.g., Admin, Borrower, Approver, Viewer).
+
+Store credentials securely and allow role-based login directly within test cases.
+
+Ensure role switching is handled efficiently without repeating code.
+
+2. Test Data Management
+
+Introduce a standardized test data strategy.
+
+Create test data files in Excel (.xlsx) and JSON formats to support both structured and unstructured data needs.
+
+Maintain test data in a central location for easy updates, version control, and reusability.
+
+3. Helper Functions for Actions
+
+Build a utility layer with reusable helper functions (e.g., click, type, dropdown select, API calls).
+
+Reduce repetitive scripting effort and improve readability of tests.
+
+Ensure consistent locator handling across tests.
+
+4. Page Management via baseFixture
+
+Move all Page Object Models (POMs) into baseFixture.
+
+Allow seamless access to page instances directly in tests without redundant imports.
+
+Improve code organization and scalability of the framework.
+
+5. Reporting Improvements
+
+Replace Allure Report with Playwright’s default reporter for better integration with trace files, video, and screenshots.
+
+Enable detailed reporting of each test, including pass/fail reasons.
+
+Provide clear insights for debugging failed cases.
+
+6. Test Steps & Debugging
+
+Add well-defined test steps in the code for better readability.
+
+Make debugging easier by tracing exactly which step failed.
+
+Provide a structured breakdown of test execution flow.
+
+7. Custom Reporter Configuration
+
+Develop a CustomReporterConfig to capture all console logs, API responses, and browser events.
+
+Allow exporting logs in a structured format for post-analysis.
+
+Ensure easy integration with external monitoring tools.
+
+8. Mailer & Notification Integration
+
+Build a mailer service to automatically send test execution reports.
+
+Support integration with Slack, Microsoft Teams, and Email.
+
+Enable real-time notifications for failures and execution summaries.
+
+9. Centralized Test Configuration
+
+Create a unified test config file to manage environment URLs, credentials, test data paths, and execution settings.
+
+Support execution across multiple environments (e.g., Dev, QA, Staging, Prod).
+
+Simplify environment switching using config flags.
+
+
 
