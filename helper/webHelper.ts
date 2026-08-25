@@ -1,659 +1,133 @@
-import { BrowserContext, Page, expect } from "@playwright/test";
-const fs = require('fs');
-import { Helper } from "helper/Helper";
+import { Page, test, expect, Locator, BrowserContext, Browser, errors } from '@playwright/test';
+import { AnnotationType } from '../utils/annotations/AnnotationType';
+import { AnnotationHelper } from '../utils/annotations/AnnotationHelper';
+import ENV from '@utils/env/env';
+import { time } from 'console';
+import * as path from 'path';
+import * as fs from 'fs';
 
-export default class WebHelper extends Helper {
+export class webHelper {
 
-  readonly webPage: Page;
-  // readonly browserContext: BrowserContext;
+         
 
-  constructor(webPage: Page) {
-    super();
-    this.webPage = webPage;
-    // this.browserContext = browserContext;
-  }
+    public stepDescription = '';
 
-  private functionsPageElements = {
-    mainMenuPage: "text=Main Menu",
-    mobileDesignPage: "text=Mobile Design",
-    fontSectionExpandCollapseBtn: "//p[text()='Fonts']/following-sibling::div",
-    colorSectionExpandCollapseBtn:
-      "//p[text()='Colors']/following-sibling::div",
-    uploadImageSectionExpandCollapseBtn:
-      "//p[text()='Image Uploads']/following-sibling::div",
-    dialogsSectionExpandCollapseBtn:
-      "//p[text()='Dialogs']/following-sibling::div",
-    desktopMockupSectionExpandCollapseBtn:
-      "//p[text()='Desktop Mockup']/following-sibling::div",
-    menuPage: "//p[text()='Menu']",
-    fontDeleteBtn:
-      "(//p[text()='Midnight']/following::button[@type='button']//div)[1]",
-    uploadedFont: "//p[text()='Midnight']",
-    uploadFont: "//div[@class='MuiBox-root css-l8gl3u']",
-    uploadFontTitle: "//p[text()='Midnight']",
-    backgroundColorInputField:
-      "//p[text()='Background']/following-sibling::button",
-    colorCodeInputField:
-      "//div[@class='MuiBox-root css-zfy2p9']/following-sibling::input[1]",
-    colorPickerWindowSaveBtn: "//button[text()='Save']",
-    textColorInputField: "//p[text()='Text Color']/following-sibling::button",
-    activeBackgroundColorInputField:
-      "//p[text()='Active Background']/following-sibling::button",
-    clearBtn: "//button[text()='Clear All']",
-    bottomAlignmentBtn: "//h5[text()='Bottom']",
-    signUpPage: "//p[text()='Sign Up']",
-    anonymousLoginRadioBtn: "input[value='anonymousLogin']",
-    threeteenOrolder: "//input[@value='thirteenOrOlder']",
-    ageInfoOff: "//span[text()='Off']",
-    automaticAssignUserNameEnableDisableBtn:
-      "(//input[contains(@class,'PrivateSwitchBase-input MuiSwitch-input')])[2]",
-    phoneNumberCheckBox: "(//input[@value='phone'])[1]",
-    emailAddressCheckBox: "(//input[@value='email'])[1]",
-    ageCheckBox: "(//input[@value='age'])[1]",
-    nameCheckBox: "(//input[@value='name'])[1]",
-    dateOfBirthCheckBox: "(//input[@value='birthDate'])[1]",
-    zipCodeCheckBox: "(//input[@value='zipCode'])[1]",
-    languagePage: "//p[text()='Language']",
-    customQuestionCheckBox: "//span[@label='Custom Question']//input[1]",
-    customOptionSignUpToHomeCheckBox: "//input[@value='signUpHome']",
-    customOptionCheckBox: "//input[@value='customOptin']",
-    userForceLanguageRadioBtn: "//input[@value='forced']",
-    forceLanguageInputField:
-      "(//div[contains(@class,'MuiSelect-select MuiSelect-outlined')])[3]",
-    englishLanguage: "//li[text()='English']",
-    menuPagePresetSelectionField: "(//div[@role='button'])[3]",
-    defaultPreset: "//li[text()='Default']",
-    addPresetPlusBtn: "(//button[@aria-label='Add new configuration'])[3]",
-    presetNameInputField: `[style="background-color: inherit;"]`,
-    saveBtn: "//button[text()='Save']",
-    saveBtnForProfileSet: "//div[@class='MuiBox-root css-1p65aex']//button[1]",
-    outsideOfInputField: "//div[@id='menu-']//div[1]",
-    signUpPresetSelctionField: "(//div[@role='button'])[3]",
-    signUpPresetNameInputField: "//input[@id='P-20334653112']",
-    chooseBtnWithoutIfream: "//button[text()='Choose File']",
-    homeBtn: `[data-testid="PersonIcon"]`,
-    entryScreenSectionFiled:
-      "(//p[text()='Entry Screen']/following::div[@role='button'])[1]",
-    entryScreenHomeBtn: "//li[@data-value='home']",
-
-    // helperForGameUrlCopy
-    triviaSestion: `//span[text()='Trivia Mania']`,
-    mobileLinkOptionCloseBtn:
-      "//button[contains(@class,'MuiButtonBase-root MuiIconButton-root')]//div[1]",
-    mobileLinkOpenBtnDefault: `[data-testid="QrCodeIcon"]`,
-    mobileLinkCopyBtn: "//button[@aria-label='Copy Link']",
-    defultGameStopBtn: "DefaultLive",
-    okBtn: "//button[text()='Ok']",
-    GameSettingsSection: '//p[text()="Game Settings"]',
-    menuPresetSelectionDropDownBtn: "(//div[@role='button'])[1]",
-    signUpPresetSelectionDropDownBtn: "(//div[@role='button'])[2]",
-    defaultMenuPreset: "//li[text()='Default']",
-    configarationDeleteBtn: `//p[text()='Delete']`,
-    confirmDeleteBtn: `//button[text()='Delete']`,
-    defaultGameTitle: `//h6[text()='Default']`,
-    colorDeleteBtn: `[data-testid="DeleteIcon"]`,
-  };
-
-  
-  async adminMainMenuSettingsHelper() {
-    // Locate the home avatar button
-    const homeAvatarBtn = this.webPage.locator(this.functionsPageElements.homeBtn);
-    try {
-      // Click the home avatar button with a delay to simulate user interaction
-      await homeAvatarBtn.click({ button: "left", delay: 1000 });
-      // Wait for 2 seconds to ensure the page has responded to the click
-      await this.webPage.waitForTimeout(2000);
-    } catch (error) {
-      // Throw an error if the home avatar button is not visible
-      throw new Error(
-        `Home Screen | Home Avatar Is Not Visible | Could not find locator: "${error}"`
-      );
-    }
-  
-    // Locate the main menu button
-    let mainMenu = await this.webPage.locator(this.functionsPageElements.mainMenuPage);
-    try {
-      // Click the main menu button with a delay
-      await mainMenu.click({ button: "left", delay: 1000 });
-      // Wait for the network activity to idle indicating the page has loaded
-      await this.webPage.waitForLoadState("networkidle");
-    } catch (error) {
-      // Throw an error if the main menu button is not visible
-      throw new Error(
-        `Home Avatar Button | Main Menu Button Element Is not Visible | Could not find locator: "${error}"`
-      );
-    }
-  
-    // Locate the Mobile Design button
-    let mobileDesignPage = await this.webPage.locator(this.functionsPageElements.mobileDesignPage);
-    try {
-      // Click the Mobile Design button with a delay
-      await mobileDesignPage.click({ button: "left", delay: 1000 });
-      // Wait for 3 seconds to ensure the page has responded to the click
-      await this.webPage.waitForTimeout(3000);
-    } catch (error) {
-      // Throw an error if the Mobile Design button is not visible
-      throw new Error(
-        `Home Avatar Button | Main Menu | Mobile Design Button Element Is not Visible | Could not find locator: "${error}"`
-      );
-    }
-  
-    // Locate the font section expand/collapse button
-    const fontSectionExp = this.webPage.locator(this.functionsPageElements.fontSectionExpandCollapseBtn);
-    try {
-      // Click the font section button with a delay
-      await fontSectionExp.click({ button: "left", delay: 1000 });
-      // Wait for 5 seconds to ensure the section has expanded/collapsed
-      await this.webPage.waitForTimeout(5000);
-    } catch (error) {
-      // Throw an error if the font section button is not visible
-      throw new Error(
-        `Main Menu | Mobile Design | Font Section Expand Collapse Button Is Not Visible | Could not find locator: "${error}"`
-      );
-    }
-  
-    // Locate the font delete button for Mobile Design
-    const fontDeleteBtnForMD = await this.webPage.locator(this.functionsPageElements.fontDeleteBtn);
-    try {
-      // Check if the font delete button is visible
-      if (await fontDeleteBtnForMD.isVisible()) {
-        // Click the font delete button with a delay
-        await fontDeleteBtnForMD.click({ button: "left", delay: 1000 });
-      }
-    } catch (error) {
-      // If an error occurs, log it silently for now
-      console.error(`Error clicking font delete button: ${error}`);
-    }
-  
-    // Define the file path for the font to be uploaded in Mobile Design
-    const filePath0forMD = "testData/fonts/Midnight.ttf";
-    // Set up a listener for the file chooser event
-    this.webPage.on("filechooser", async (filechooser) => {
-      // Set the file to be uploaded when the file chooser is triggered
-      await filechooser.setFiles([filePath0forMD]);
-    });
-  
-  
-      // Step 1: Locate and click the font upload button for Mobile Design
-  const uploadMenuFontForMD = await this.webPage
-  .locator(this.functionsPageElements.uploadFont)
-  .first();
-  try {
-  // Attempt to click the upload button with a simulated user delay
-  await uploadMenuFontForMD.click({ button: "left", delay: 1000 });
-  } catch (error) {
-  // If the button is not found, throw an error with a detailed message
-  throw new Error(
-    `Main Menu Font Upload Element Is Not Found | Could not find locator: "${error}"`
-  );
-  }
-  
-  // Step 2: Verify that the font uploaded successfully
-  await this.webPage.waitForSelector(this.functionsPageElements.uploadFontTitle);
-  const verifyFontUploadedMD = this.webPage.locator(
-  this.functionsPageElements.uploadFontTitle
-  );
-  try {
-  // Check if the uploaded font title is clickable and perform a click
-  await verifyFontUploadedMD.click({ button: "left", delay: 1000 });
-  } catch (error) {
-  // If the font title is not clickable, throw an error indicating upload failure
-  throw new Error("Font Does Not Upload Successfully");
-  }
-  
-  // Step 3: Navigate to the Mobile Design page
-  let menuPage = await this.webPage.locator(this.functionsPageElements.menuPage);
-  try {
-  // Click the Mobile Design button with a delay to allow for user-like interaction
-  await menuPage.click({ button: "left", delay: 1000 });
-  // Wait for 2 seconds to ensure the navigation has occurred
-  await this.webPage.waitForTimeout(2000);
-  } catch (error) {
-  // If the Mobile Design button is not visible, throw an error with details
-  throw new Error(
-    `Home Avatar Button | Main Menu | Menu Page Button Element Is not Visible | Could not find locator: "${error}"`
-  );
-  }
-  
-  // Step 4: Select a preset from the menu page
-  const presetMenuSection = await this.webPage.locator(
-  this.functionsPageElements.menuPagePresetSelectionField
-  );
-  try {
-  // Force click the preset selection field if it's not immediately interactable
-  await presetMenuSection.click({ button: "left", force: true });
-  // Wait for 2 seconds to allow for any associated actions to complete
-  await this.webPage.waitForTimeout(2000);
-  } catch (error) {
-  // If the preset selection field is not visible, throw an error with details
-  throw new Error(
-    `Main Menu | Menu Page Preset Selection Input Field Is Not Visible | Could not find locator: "${error}"`
-  );
-  }
-  
-  
-      // Initialize locator for the 'Add Preset' plus button
-  let addPresetPlusbtn = await this.webPage.locator(
-    this.functionsPageElements.addPresetPlusBtn
-  );
-  // Initialize locator for the 'Save' button
-  let saveBtn = await this.webPage.locator(this.functionsPageElements.saveBtn);
-  // Initialize locator for the area outside of input fields
-  let outsideOfInputFiled = await this.webPage.locator(
-    this.functionsPageElements.outsideOfInputField
-  );
-  // Initialize locator for the 'Add Preset' input field
-  let addPresetInputField = await this.webPage.locator(
-    this.functionsPageElements.presetNameInputField
-  );
-  // Initialize locator for the 'Sign Up' add preset name input field by placeholder
-  let signUPAddPresetNameInputField = await this.webPage.getByPlaceholder(
-    "Name"
-  );
-  // Initialize locator for the 'Sign Up' page preset selection field
-  let signUpPagePresetInputField = await this.webPage.locator(
-    this.functionsPageElements.signUpPresetSelctionField
-  );
-  // Initialize locator for the default preset option
-  let defaultPreset = await this.webPage.locator(
-    this.functionsPageElements.defaultPreset
-  );
-  
-  // Check if the default preset is visible
-  if (await defaultPreset.isVisible()) {
-    // If visible, click the default preset
-    await defaultPreset.click({ button: "left", delay: 1000 });
-  } else {
-    // If not visible, click outside the input field to close any open dropdown
-    await outsideOfInputFiled.click({ button: "left", delay: 1000 });
-    // Click the 'Add Preset' plus button to open the add preset dialog
-    await addPresetPlusbtn.click({ button: "left" });
-    // Wait for 2 seconds to ensure the dialog is open
-    await this.webPage.waitForTimeout(2000);
-    // Fill the 'Add Preset' input field with the name "Default"
-    await addPresetInputField.fill("Default");
-    // Wait for 2 seconds after filling the input
-    await this.webPage.waitForTimeout(2000);
-    // Click the 'Save' button to save the new preset
-    await saveBtn.click({ button: "left" });
-    // Click the preset menu section to select the new preset
-    await presetMenuSection.click({ button: "left", delay: 1000 });
-    // Click the default preset now that it has been added
-    await defaultPreset.click({ button: "left", delay: 1000 });
-  }
-  
-  // Initialize locator for the font delete button
-  const fontDeleteBtn = await this.webPage.locator(
-    this.functionsPageElements.fontDeleteBtn
-  );
-  try {
-    // Check if the font delete button is visible
-    if (await fontDeleteBtn.isVisible()) {
-      // If visible, click the font delete button
-      await fontDeleteBtn.click({ button: "left", delay: 1000 });
-      // Wait for 2 seconds after clicking
-      await this.webPage.waitForTimeout(2000);
-    }
-  } catch (error) {
-    // Log any errors silently
-    console.error(`Error clicking font delete button: ${error}`);
-  }
-  
-  // Define the file path for the font to be uploaded
-  const filePath0 = "testData/fonts/Midnight.ttf";
-  // Set up a listener for the file chooser event
-  this.webPage.on("filechooser", async (filechooser) => {
-    // Set the file to be uploaded when the file chooser is triggered
-    await filechooser.setFiles([filePath0]);
-  });
-  
-  // Initialize locator for the upload font button
-  const uploadMenuFont = await this.webPage
-    .locator(this.functionsPageElements.uploadFont)
-    .first();
-  try {
-    // Click the upload font button
-    await uploadMenuFont.click({ button: "left", delay: 1000 });
-  } catch (error) {
-    // Throw an error if the upload font button is not found
-    throw new Error(
-      `Main Menu Font Upload Element Is Not Found | Could not find locator: "${error}"`
-    );
-  }
-  
-  // Wait for the font title to appear as a confirmation of successful upload
-  await this.webPage.waitForSelector(this.functionsPageElements.uploadFontTitle);
-  // Initialize locator for the uploaded font title
-  const verifyFontUploaded = this.webPage.locator(
-    this.functionsPageElements.uploadFontTitle
-  );
-  try {
-    // Click the uploaded font title to verify the upload
-    await verifyFontUploaded.click({ button: "left", delay: 1000 });
-  } catch (error) {
-    // Throw an error if the font title is not clickable, indicating upload failure
-    throw new Error("Font Does Not Upload Successfully");
-  }
-  
-  // Initialize locator for the entry screen section field
-  const entryScreen = this.webPage.locator(
-    this.functionsPageElements.entryScreenSectionFiled
-  );
-  // Initialize locator for the home button on the entry screen
-  const homeBtn = this.webPage.locator(
-    this.functionsPageElements.entryScreenHomeBtn
-  );
-  
-  try {
-    // Click the entry screen section field
-    await entryScreen.click({ button: "left", delay: 1000 });
-    // Wait for 2 seconds to allow for any associated actions to complete
-    await this.webPage.waitForTimeout(2000);
-    // Click the home button on the entry screen
-    await homeBtn.click({ button: "left", delay: 1000 });
-  } catch (error) {
-    // Throw an error if there is an issue selecting the home button on the entry screen
-    throw new Error("Entry Screen Home Button Selection Issue");
-  }
-  
-  
-     // Initialize locator for the 'Clear' button
-  const clearBtn = this.webPage.locator(this.functionsPageElements.clearBtn);
-  try {
-    // Click the 'Clear' button with a simulated user delay
-    await clearBtn.click({ button: "left", delay: 1000 });
-  } catch (error) {
-    // Throw an error if the font upload process does not succeed
-    throw new Error("Font Does Not Upload Successfully");
-  }
-  
-  // Initialize locator for the 'Bottom Alignment' button in the Menu Bar
-  const bottomAlignmentBtn = this.webPage.locator(
-    this.functionsPageElements.bottomAlignmentBtn
-  );
-  try {
-    // Click the 'Bottom Alignment' button with a delay
-    await bottomAlignmentBtn.click({ button: "left", delay: 1000 });
-  } catch (error) {
-    // Throw an error if the bottom alignment button is not visible
-    throw new Error("Main Bar Bottom Alignment Button Element Is Visible");
-  }
-  
-  // Initialize locator for the 'Sign Up' page button
-  const signUpPage = this.webPage.locator(this.functionsPageElements.signUpPage);
-  try {
-    // Click the 'Sign Up' page button with a delay
-    await signUpPage.click({ button: "left", delay: 1000 });
-    // Wait for the network activity to idle, indicating the page has loaded
-    await this.webPage.waitForLoadState("networkidle");
-  } catch (error) {
-    // Throw an error if the sign-up button element is not visible
-    throw new Error("Sign Up Page SignUP Button Element Is Not Visible");
-  }
-  
-  // Click the preset input field on the 'Sign Up' page
-  await signUpPagePresetInputField.click({ button: "left" });
-  // Wait for 2 seconds to allow for any associated actions to complete
-  await this.webPage.waitForTimeout(2000);
-  
-  // Check if the default preset is visible
-  if (await defaultPreset.isVisible()) {
-    // If visible, click the default preset
-    await defaultPreset.click({ button: "left", delay: 1000 });
-  } else {
-    // If not visible, click outside the input field to close any open dropdown
-    await outsideOfInputFiled.click({ button: "left", delay: 1000 });
-    // Wait for 2 seconds
-    await this.webPage.waitForTimeout(2000);
-    // Click the 'Add Preset' plus button to open the add preset dialog
-    await addPresetPlusbtn.click({ button: "left" });
-    // Wait for 2 seconds to ensure the dialog is open
-    await this.webPage.waitForTimeout(2000);
-    // Fill the 'Add Preset' input field with the name "Default"
-    await addPresetInputField.fill("Default");
-    // Click the 'Save' button to save the new preset
-    await saveBtn.click({ button: "left" });
-    // Click the preset input field again to select the new preset
-    await signUpPagePresetInputField.click({ button: "left", delay: 1000 });
-    // Click the default preset now that it has been added
-    await defaultPreset.click({ button: "left", delay: 1000 });
-  }
-  
-  // Initialize locator for the 'Anonymous Login' radio button
-  let anonymousLoginRadioBtn = await this.webPage
-    .locator(this.functionsPageElements.anonymousLoginRadioBtn)
-    .isChecked();
-  // Check if the 'Anonymous Login' radio button is not already checked
-  if (anonymousLoginRadioBtn == false) {
-    // If not checked, click the 'Anonymous Login' radio button
-    await this.webPage
-      .locator(this.functionsPageElements.anonymousLoginRadioBtn)
-      .click({ button: "left", delay: 1000 });
-    // Wait for 2 seconds after clicking
-    await this.webPage.waitForTimeout(2000);
-  }
-  
-  
-     // Click the checkbox to confirm the user's age is 13 or older
-  let ageInfoOff = await this.webPage.locator(this.functionsPageElements.ageInfoOff);
-  try {
-    // Force the click action in case the element is not immediately interactable
-    await ageInfoOff.click({ force: true });
-  } catch (error) {
-    // If the element is not visible, throw an error with a descriptive message
-    throw new Error("Sign Up Page age info off Button Element Is Not Visible");
-  }
-  
-  // Check the status of the automatic username assignment toggle
-  let automaticAssignUserNameEnableDisableBtn = await this.webPage
-    .locator(this.functionsPageElements.automaticAssignUserNameEnableDisableBtn)
-    .isChecked();
-  // If the toggle is off, click to enable automatic username assignment
-  if (automaticAssignUserNameEnableDisableBtn == false) {
-    await this.webPage
-      .locator(this.functionsPageElements.automaticAssignUserNameEnableDisableBtn)
-      .click({ button: "left", delay: 1000 });
-    // Wait for 2 seconds to ensure the action is processed
-    await this.webPage.waitForTimeout(2000);
-  }
-  
-  // Check the status of the phone number checkbox in additional information
-  let phoneNumberCheckBox = await this.webPage
-    .locator(this.functionsPageElements.phoneNumberCheckBox)
-    .isChecked();
-  // If the checkbox is checked, click to uncheck it
-  if (phoneNumberCheckBox == true) {
-    await this.webPage
-      .locator(this.functionsPageElements.phoneNumberCheckBox)
-      .click({ button: "left", delay: 1000 });
-    // Wait for 2 seconds to ensure the action is processed
-    await this.webPage.waitForTimeout(2000);
-  }
-  
-  // Check the status of the email address checkbox in additional information
-  let emailAddressCheckBox = await this.webPage
-    .locator(this.functionsPageElements.emailAddressCheckBox)
-    .isChecked();
-  // If the checkbox is checked, click to uncheck it
-  if (emailAddressCheckBox == true) {
-    await this.webPage
-      .locator(this.functionsPageElements.emailAddressCheckBox)
-      .click({ button: "left", delay: 1000 });
-    // Wait for 2 seconds to ensure the action is processed
-    await this.webPage.waitForTimeout(2000);
-  }
-  
-  
-      // Uncheck the 'Age' checkbox if it is checked
-  let ageCheckBox = await this.webPage
-  .locator(this.functionsPageElements.ageCheckBox)
-  .isChecked();
-  if (ageCheckBox == true) {
-  await this.webPage
-    .locator(this.functionsPageElements.ageCheckBox)
-    .click({ button: "left", delay: 1000 });
-  // Wait for 2 seconds to ensure the action is processed
-  await this.webPage.waitForTimeout(2000);
-  }
-  
-  // Uncheck the 'Name' checkbox if it is checked
-  let nameCheckBox = await this.webPage
-  .locator(this.functionsPageElements.nameCheckBox)
-  .isChecked();
-  if (nameCheckBox == true) {
-  await this.webPage
-    .locator(this.functionsPageElements.nameCheckBox)
-    .click({ button: "left", delay: 1000 });
-  // Wait for 2 seconds to ensure the action is processed
-  await this.webPage.waitForTimeout(2000);
-  }
-  
-  // Uncheck the 'Date of Birth' checkbox if it is checked
-  let dateOfBirthCheckBox = await this.webPage
-  .locator(this.functionsPageElements.dateOfBirthCheckBox)
-  .isChecked();
-  if (dateOfBirthCheckBox == true) {
-  await this.webPage
-    .locator(this.functionsPageElements.dateOfBirthCheckBox)
-    .click({ button: "left", delay: 1000 });
-  // Wait for 2 seconds to ensure the action is processed
-  await this.webPage.waitForTimeout(2000);
-  }
-  
-  // Uncheck the 'Zip Code' checkbox if it is checked
-  let zipCodeCheckBox = await this.webPage
-  .locator(this.functionsPageElements.zipCodeCheckBox)
-  .isChecked();
-  if (zipCodeCheckBox == true) {
-  await this.webPage
-    .locator(this.functionsPageElements.zipCodeCheckBox)
-    .click({ button: "left", delay: 1000 });
-  // Wait for 2 seconds to ensure the action is processed
-  await this.webPage.waitForTimeout(2000);
-  }
-  
-  // Uncheck the 'Custom Question' checkbox if it is checked
-  let customQuestionCheckBox = await this.webPage
-  .locator(this.functionsPageElements.customQuestionCheckBox)
-  .isChecked();
-  if (customQuestionCheckBox == true) {
-  await this.webPage
-    .locator(this.functionsPageElements.customQuestionCheckBox)
-    .click({ button: "left", delay: 1000 });
-  // Wait for 2 seconds to ensure the action is processed
-  await this.webPage.waitForTimeout(2000);
-  }
-  
-  
-      
-     // Check if the 'Sign Up to Home' custom option checkbox is unchecked
-  let signUpToHomeBtn = await this.webPage
-  .locator(this.functionsPageElements.customOptionSignUpToHomeCheckBox)
-  .isChecked();
-  // If unchecked, click to check it and wait for 2 seconds
-  if (signUpToHomeBtn == false) {
-  await this.webPage
-    .locator(this.functionsPageElements.customOptionSignUpToHomeCheckBox)
-    .click({ button: "left", delay: 1000 });
-  await this.webPage.waitForTimeout(2000);
-  }
-  
-  // Locate the custom option checkbox and uncheck it if checked
-  let customOf = await this.webPage.locator(
-  this.functionsPageElements.customOptionCheckBox
-  );
-  try {
-  await customOf.uncheck({ force: true });
-  await this.webPage.waitForTimeout(2000);
-  } catch (error) {
-  // Error handling is not specified
-  }
-  
-  // Navigate to the Language Page by clicking the corresponding button
-  let languagePage = await this.webPage.locator(
-  this.functionsPageElements.languagePage
-  );
-  try {
-  await languagePage.click({ button: "left", delay: 1000 });
-  } catch (error) {
-  // Throw an error if the Language Page button is not found
-  throw new Error(
-    `Main Menu | Language Page Button Element Is Not Found | Error occurred: ${error}`
-  );
-  }
-  
-  // Double-click the 'User Force Language' radio button to select it
-  let userForceLanguageRadioBtn = await this.webPage.locator(
-  this.functionsPageElements.userForceLanguageRadioBtn
-  );
-  try {
-  await userForceLanguageRadioBtn.dblclick({ button: "left", delay: 1000 });
-  await this.webPage.waitForTimeout(2000);
-  } catch (error) {
-  // Throw an error if the User Force Language radio button is not visible
-  throw new Error(
-    `Main Menu | Language Page User Force Language Radio Button Element Is Not Visible | Error occurred: ${error}`
-  );
-  }
-  
-  // Click the 'Force Language' input field to set a specific language
-  let ele = await this.webPage.locator(
-  this.functionsPageElements.forceLanguageInputField
-  );
-  try {
-  await ele.click({ button: "left", delay: 1000 });
-  await this.webPage.waitForTimeout(2000);
-  } catch (error) {
-  // Throw an error if the Force Language input field is not visible
-  throw new Error(
-    `Main Menu | Language Page User Force Language Radio Input Field Element Is Not Visible | Error occurred: ${error}`
-  );
-  }
-  
-  
-     // Locate the English language option on the Language Page
-  let englishLanguage = await this.webPage.locator(
-    this.functionsPageElements.englishLanguage
-  );
-  try {
-    // Click the English language option with a delay to simulate user interaction
-    await englishLanguage.click({ button: "left", delay: 1000 });
-    // Wait for 2 seconds to ensure the language selection is processed
-    await this.webPage.waitForTimeout(2000);
-  } catch (error) {
-    // Throw an error if the English language option is not visible
-    throw new Error(
-      `Main Menu | Language Page English Language Element Is Not Visible | Error occurred: ${error}`
-    );
-  }
-  
+    protected isAnnotationEnabled = true;
+    protected annotationHelper: AnnotationHelper;
+    
+    constructor(protected readonly page: Page, public readonly keyPage: string) {
+        this.annotationHelper = new AnnotationHelper(this.page, this.keyPage);
     }
 
-  async deleteHelper() {
 
-      const elements = this.webPage.frameLocator('iframe').locator(this.functionsPageElements.colorDeleteBtn).nth(0)
-                          
+   
+  
+
+
+  
+
+
+
+
+    /**
+     * Go to the base Address
+     */
+    public async goTo(url: any): Promise<void> {
+        this.annotationHelper.addAnnotation(AnnotationType.GoTo, 'Go to the page: "' + url + '"');
+        await this.page.goto(url, { waitUntil: 'load' });
+        console.log('Navigated to the page: "' + url + '"');
         
-  
-      while (true) {
-        // const elements = page.locator(locatorString);
-        const count = await elements.count();
-  
-        if (count === 0) {
-            break; // Exit the loop if no elements are found
-        }        
-        for (let i = 0; i < count; i++) {
-            const element = elements.nth(i);
-            if (await element.isVisible()) {
-                
-                await elements.click({ button: "left", delay: 1000 })                                                         
-                // Add a small delay to allow for page updates or use waitForResponse or waitForSelector if more appropriate
-                // await this.page.waitForTimeout(1000); // Adjust the timeout as necessary
-            }
-        }
     }
-  }
 
+    /**
+     * Add annotation
+     * @param type Type of the annotation (shows in bold)
+     * @param description Description for the annotation
+     */
+    addAnnotation(type: AnnotationType, description: string) {
+        this.annotationHelper.addAnnotation(type, description);
+    }
+
+    /**
+     * Add friendly step in reporter
+     * @param stepFunction function to add 
+     * @returns Data returned by the function
+     */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    async addStep(stepDescription: string, stepFunction: any): Promise<any> {
+        return await test.step(stepDescription, stepFunction);
+    }
+
+    /**
+     * Add steps with annotations
+     * @param type 
+     * @param description 
+     * @param stepFunction 
+     * @returns 
+     */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    async addStepWithAnnotation(type: AnnotationType, description: string, stepFunction: () => Promise<any>) {
+        if (this.isAnnotationEnabled) {
+            this.addAnnotation(type, description);
+            return await test.step(description, stepFunction);
+        }
+        else
+            await stepFunction();
+    }
+
+    /**
+     * Go to Default page
+     */
+    async goToDefault() {
+        const stepDescription = 'Go to default page';
+        this.addAnnotation(AnnotationType.GoTo, stepDescription);
+        // eslint-disable-next-line playwright/expect-expect
+        await test.step(stepDescription + '', async () => {
+            await this.page.goto('/');
+        });
+    }
+
+    async leftClickButton(locator: string): Promise<void> {
+        await this.page.locator(locator).click({ button: "left" });
+      }
+    
+    
+    
+
+    /**
+     * Init annotation to an empty array
+     */
+    initAnnotations() {
+        this.annotationHelper.initAnnotations();
+    }
+
+    /**
+     * Get current annotations
+     * @returns Array of current annotations
+     */
+    getAnnotations() {
+        return this.annotationHelper.getAnnotations();
+    }
+
+
+
+    /**
+     * Check that 2 values are equal
+     * @param expected Value expected
+     * @param actual Actual Value
+     * @param assertMessage  Message to assert
+     */
+    public AssertEqual(expected: string, actual: string, assertMessage: string) {
+        this.annotationHelper.addAnnotation(AnnotationType.Assert, assertMessage);
+        expect.soft(expected, assertMessage).toEqual(actual);
+    }
+
+    public AssertArrayEqual(expected: any, actual: any, assertMessage: any) {
+        this.annotationHelper.addAnnotation(AnnotationType.Assert, assertMessage);
+        expect(expected).toContain(actual);
+    }
+
+    
   /**
    * The `delay` function is an asynchronous function that waits for a specified amount of time before
    * resolving.
@@ -676,41 +150,1175 @@ export default class WebHelper extends Helper {
    * only click on elements that have an exact match with the provided text. If `exact` is set to `
    */
   async clickByText(text: string, exact: boolean = true): Promise<void> {
-    await this.webPage.getByText(text, { exact: exact }).click();
+    await this.page.getByText(text, { exact: exact }).click();
   }
 
   async rightClickButton(locator: string): Promise<void> {
-    await this.webPage.locator(locator).click({ button: "right" });
-  }
-
-  async leftClickButton(locator: string): Promise<void> {
-    await this.webPage.locator(locator).click({ button: "left" });
+    await this.page.locator(locator).click({ button: "right" });
   }
 
 
 
-
-
-
-
-
-  async clickHelper(selector: string, options: { retries?: number, timeout?: number } = {}): Promise<void> {
+  async clickHelperForString(selector: any, options: { retries?: number, timeout?: number } = {}): Promise<void> {
     const { retries = 3, timeout = 3000 } = options;
+    
     for (let attempt = 0; attempt < retries; attempt++) {
         try {
-            await this.webPage.waitForSelector(selector, { state: 'attached', timeout });
-            await this.webPage.click(selector);
-            return;
+            if (!this.page.isClosed()) {  // Check if page is still open
+                await this.page.waitForSelector(selector, { state: 'attached', timeout });
+                await this.page.click(selector, {delay: 100, button: 'left'});                
+                return;  // Exit after a successful click
+            } else {
+                throw new Error('Page or context has been closed.');
+            }
         } catch (error) {
+            console.error(`Attempt ${attempt + 1} failed: ${error}`);
             if (attempt === retries - 1) {
-                throw new Error(`Click failed on selector: ${selector}. Error: ${error}`);
+                throw new Error(`Click failed on selector: ${selector}. Error after ${retries} attempts: ${error}`);
             }
         }
     }
 }
 
+/**
+ * Helper function to wait for a selector on a Locator object.
+ * @param locator - The Playwright Locator object to wait for.
+ * @param options - Optional: WaitForSelector options such as timeout or state.
+ */
+async  waitForSelector(
+  locator: Locator,
+  options: { timeout?: number; errorMessage?: string; state?: 'attached' | 'detached' | 'hidden' | 'visible' } 
+  = { state: 'visible', errorMessage: `Failed to wait the locator ${locator} within the expected time.` , timeout: 9000}
+): Promise<void> {
+  const { state = 'visible', errorMessage } = options || {};
+  try {
+    await locator.waitFor(options);
+    console.log('Locator is ready:', locator);
+  } catch (error) {
+    throw new Error(errorMessage || `Error: Selector '${locator}' not found in the expected state '${state}'.`);  }
+}
+
+
+/**
+ * Helper function to click on a locator with retries and delay between retries.
+ * @param locator - The Playwright Locator object to click.
+ * @param options - Optional: Click options such as delay, retries, and timeout.
+ */
+
+async clickIfVisible(locator: Locator, retries: number = 3, timeout: number = 5000): Promise<void> {
+  for (let attempt = 1; attempt <= retries; attempt++) {
+      try {
+          // Wait for the element to be visible and attached to the DOM
+          await locator.waitFor({ state: 'visible', timeout });
+          // Attempt to click the element
+          await locator.click({ force: true}); 
+          await this.page.waitForTimeout(400); // Adjust the timeout as necessary         
+          return; // Exit after a successful click
+      } catch (error) {
+         
+      }
+  }
+}
+
+/**
+ * Helper function to click on a Locator object with custom error handling.
+ * 
+ * @param locator - The Playwright Locator object to click.
+ * @param options - Optional: Options to configure timeout and error messaging.
+ */
+async clickHelper(
+  locator: Locator,
+  options: { timeout?: number; errorMessage?: string } = { timeout: 5000, errorMessage: `Failed to click the locator ${locator} within the expected time.` }
+): Promise<void> {
+  const { timeout = 5000, errorMessage } = options;
+
+  try {
+    // Ensure the locator is visible and enabled before clicking
+    // await locator.waitFor({
+    //   state: 'visible',
+    //   timeout,
+    // });
+    await locator.click({ force: true, button: "left" });
+    console.log(`Successfully clicked on locator: ${locator}`);
+  } catch (error: any) {
+    console.error(
+      errorMessage + error || `Failed to click on the locator '${locator.toString()}'. ${error}`,
+      
+    );
+    throw new Error(
+      errorMessage + error || `Error: Unable to click on the locator within ${timeout}ms.`
+    );
+  }
+}
+
+
+/**
+ * Helper function to scroll into view (if needed) and click on a Locator object with custom error handling.
+ * 
+ * @param locator - The Playwright Locator object to scroll and click.
+ * @param options - Optional: Options to configure timeout and error messaging.
+ */
+async  scrollIfNeeded(
+  locator: Locator,
+  options: { timeout?: number; errorMessage?: string } = {
+    timeout: 5000,
+    errorMessage: `Failed to scroll the locator within the expected time.`
+  }
+): Promise<void> {
+  const { timeout = 5000, errorMessage } = options;
+
+  try {
+    // Wait for the element to be attached and visible
+    await locator.waitFor({ state: 'visible', timeout });
+
+    // Scroll into view if needed
+    await locator.scrollIntoViewIfNeeded({ timeout });
+
+    // Attempt to click
+    // await locator.click({ timeout });
+
+    console.log(`Successfully scrolled to and clicked on locator: ${locator}`);
+  } catch (error: any) {
+    const finalMessage =
+      errorMessage ||
+      `Error: Unable to scroll and click on the locator '${locator.toString()}' within ${timeout}ms.`;
+    console.error(`${finalMessage}\n`, error);
+    throw new Error(finalMessage);
+  }
+}
+
+
+async dblclickHelper(locator: Locator, retries: number = 3, timeout: number = 5000): Promise<void> {
+  for (let attempt = 1; attempt <= retries; attempt++) {
+      try {
+          // Wait for the element to be visible and attached to the DOM
+          await locator.waitFor({ state: 'visible', timeout });
+          // Attempt to click the element
+          await locator.dblclick({ force: true, button: "left"}); 
+          await this.page.waitForTimeout(400); // Adjust the timeout as necessary         
+          return; // Exit after a successful click
+      } catch (error) {
+          if (attempt === retries) {
+              throw new Error(`Click failed on locator: ${locator} after ${retries} attempts. Error: ${error}`);
+          } else {
+              console.warn(`Attempt ${attempt} failed for locator: ${locator}. Retrying...`);
+          }
+      }
+  }
+}
+
+
+
+
+/**
+ * Helper function to select an option from a dropdown (Locator) with custom error handling.
+ * 
+ * @param locator - The Playwright Locator object representing the dropdown.
+ * @param value - The value, label, or index of the option to select.
+ * @param options - Optional: Configuration for timeout and error messaging.
+ */
+async selectOptionHelper(
+  locator: Locator,
+  value: string | number | { label?: string; value?: string; index?: number },
+  options: { timeout?: number; errorMessage?: string } = { timeout: 5000, errorMessage: `Failed to select option in locator ${locator} within the expected time.` }
+): Promise<void> {
+  const { timeout = 5000, errorMessage } = options;
+
+  try {
+    // Ensure the dropdown is visible before interacting
+    await locator.waitFor({
+      state: 'visible',
+      timeout,
+    });
+
+    // Select the option
+    await locator.selectOption(typeof value === 'number' ? value.toString() : value);
+    console.log(`Successfully selected option: ${JSON.stringify(value)} in locator: ${locator}`);
+  } catch (error) {
+    console.error(
+      errorMessage || `Failed to select option '${JSON.stringify(value)}' in locator '${locator.toString()}'.`,
+      error
+    );
+    throw new Error(
+      errorMessage || `Error: Unable to select option within ${timeout}ms.`
+    );
+  }
+}
+
+
+
+/**
+ * Waits for all network-loaded images on the page to be fully loaded.
+ * @param {Page} page - The Playwright page instance.
+ * @param {number} timeout - Optional timeout to wait for images to load (default: 10000 ms).
+ */
+async  waitForAllImagesToLoad(page: Page, timeout: number = 10000): Promise<void> {
+    await page.waitForFunction(() => {
+        // Select all <img> elements on the page
+        const images = Array.from(document.querySelectorAll('img'));
+        
+        // Check if every image is fully loaded
+        return images.every(img => img.complete && img.naturalHeight !== 0);
+    }, { timeout });
+
+    console.log('All images have successfull y loaded.');
+}
+
+
+
+
+/**
+ * Waits for all network requests to complete (network idle) on the page.
+ * @param {Page} page - The Playwright page instance.
+ * @param {number} idleTime - Optional time in milliseconds to wait after network becomes idle (default: 500 ms).
+ * @param {number} timeout - Optional timeout for waiting for network to be idle (default: 10000 ms).
+ */
+async waitForNetworkIdleEle(page: Page, idleTime: number = 500, timeout: number = 10000): Promise<void> {
+    let pendingRequests = 0;
+    let idleTimeoutId: NodeJS.Timeout| undefined;
+
+    const onRequestStarted = () => {
+        pendingRequests += 1;
+        clearTimeout(idleTimeoutId);
+    };
+
+    const onRequestFinished = () => {
+        pendingRequests -= 1;
+        if (pendingRequests === 0) {
+            idleTimeoutId = setTimeout(() => resolveIdlePromise(), idleTime);
+        }
+    };
+
+    const resolveIdlePromise = () => {
+        page.off('request', onRequestStarted);
+        page.off('requestfinished', onRequestFinished);
+        page.off('requestfailed', onRequestFinished);
+        idleResolve();
+    };
+
+    let idleResolve: () => void;
+    const idlePromise = new Promise<void>(resolve => (idleResolve = resolve));
+
+    // Attach event listeners for request start and end
+    page.on('request', onRequestStarted);
+    page.on('requestfinished', onRequestFinished);
+    page.on('requestfailed', onRequestFinished);
+
+    try {
+        // Wait for either idle state or timeout
+        await Promise.race([
+            idlePromise,
+            new Promise((_, reject) =>
+                setTimeout(() => reject(new Error(`Timeout waiting for network to be idle`)), timeout)
+            ),
+        ]);
+        console.log('All network requests have successfully completed.');
+    } finally {
+        clearTimeout(idleTimeoutId);
+        // Ensure listeners are removed even if an error occurs
+        page.off('request', onRequestStarted);
+        page.off('requestfinished', onRequestFinished);
+        page.off('requestfailed', onRequestFinished);
+    }
+}
+
+
+
+/**
+ * Asserts that an element contains the specified text content.
+ * @param {Locator} locator - The locator for the element to check.
+ * @param {string} expectedText - The expected text content within the element.
+ * @param {number} timeout - The maximum wait time in milliseconds for the element to appear (default is 3000 ms).
+ */
+async assertTextHelper(locator: Locator, expectedText: string, timeout: number = 5000): Promise<void> {
+    try {
+        // Wait for the element to be visible
+        await locator.waitFor({ state: 'visible', timeout });
+
+        // Retrieve the text content of the element
+        const actualText = await locator.textContent();
+
+        // Capture screenshot on failure
+        const screenshot = await this.page.screenshot({ fullPage: true });
+        
+        // Attach screenshot to the test report
+        test.info().attach('Screenshot on', {
+            body: screenshot,
+            contentType: 'image/png',
+        });
+         // Softly assert that the actual text content matches the expected text
+        await expect.soft(actualText?.trim()).toBe(expectedText.trim());        
+        console.log(`Soft text assertion for locator: ${locator}. Expected text "${expectedText}" is present.`);
+
+    } catch (error) {       
+      throw new Error(`Text assertion failed for locator: ${locator}. Error: ${error}`);
+    }
+}
+
+
+
+/**
+ * Helper function to verify if a given text is included in the page URL.
+ * @param {Page} page - The Playwright Page object.
+ * @param {string} expectedText - The text expected to be part of the page URL.
+ */
+async assaertToContain(locator: Locator, expectedText: string): Promise<void> {
+  
+
+        // Retrieve the text content of the element
+  const actualText = await locator.innerText();
+  // Check if the expected text is included in the URL
+  try {
+    expect.soft(expectedText).toContain(actualText);
+    console.log(`Soft text assertion for locator: ${actualText}. Expected text "${expectedText}"`);
+  } catch (error) {
+    console.error(`Text "${expectedText}" not found in the URL: ${locator}`);
+    throw error;
+  }
+}
+
+
+
+/**
+ * Helper function to verify if a given text is included in the page URL.
+ * @param {Page} page - The Playwright Page object.
+ * @param {string} expectedText - The text expected to be part of the page URL.
+ */
+async verifyTextInURL(page: Page, expectedText: string): Promise<void> {
+  // Get the current URL
+  const currentURL = page.url();
+  
+  // Check if the expected text is included in the URL
+  try {
+    expect(currentURL).toContain(expectedText);
+    console.log(`Text "${expectedText}" found in the URL: ${currentURL}`);
+  } catch (error) {
+    console.error(`Text "${expectedText}" not found in the URL: ${currentURL}`);
+    throw error;
+  }
+}
+
+
+
+
+
+/**
+ * Fills text into an input field specified by a Locator, with optional retries and timeout.
+ * @param {Locator} locator - The locator for the input field.
+ * @param {string} text - The text to fill into the input field.
+ * @param {number} retries - Number of retries if the fill fails (default is 3).
+ * @param {number} timeout - Maximum wait time for each attempt in milliseconds (default is 3000 ms).
+ */
+
+
+// async inputTextHelper(locator: Locator, text: string, retries: number = 3, timeout: number = 3000): Promise<void> {
+//     for (let attempt = 1; attempt <= retries; attempt++) {
+//         try {
+//             // Wait for the input field to be visible and enabled
+//             await locator.waitFor({ state: 'visible', timeout });
+
+//             // Fill the specified text into the input field
+//             await locator.fill(text);            
+//             return; // Exit after successful fill
+//         } catch (error) {
+//             if (attempt === retries) {
+//                 throw new Error(`Filling text failed on locator: ${locator} after ${retries} attempts. Error: ${error}`);
+//             } else {
+//                 console.warn(`Attempt ${attempt} failed for locator: ${locator}. Retrying...`);
+//             }
+//         }
+//     }
+// }
+
+
+
+
+/**
+ * Helper function to input text into a field with retries and delay between retries.
+ * @param {Locator} locator - The Locator of the input field.
+ * @param {string} text - The text to input into the field.
+ * @param {number} retries - The number of attempts to try inputting text (default: 3).
+ * @param {number} timeout - Timeout in milliseconds to wait for the field to be visible (default: 3000 ms).
+ * @param {number} delay - Delay in milliseconds between each retry attempt (default: 500 ms).
+ * @returns {Promise<void>}
+ */
+async inputTextHelper(
+    locator: Locator,
+    text: any,
+    retries: number = 3,
+    timeout: number = 3000,
+    delay: number = 500
+): Promise<void> {
+    for (let attempt = 1; attempt <= retries; attempt++) {
+        try {
+            // Wait for the input field to be visible and enabled
+            await locator.waitFor({ state: 'visible', timeout }); 
+            await locator.fill(""); // Clear any existing text
+            // Fill the specified text into the input field
+            await locator.fill(text);            
+            console.log(`Text input successful on ${locator}.`);
+            return; // Exit after a successful fill
+        } catch (error) {
+            if (attempt === retries) {
+                throw new Error(`Filling text failed on locator: ${locator} after ${retries} attempts. Error: ${error}`);
+            } else {
+                console.warn(`Attempt ${attempt} failed for locator: ${locator}. Retrying in ${delay} ms...`);
+                await new Promise(res => setTimeout(res, delay)); // Wait before retrying
+            }
+        }
+    }
+}
+
+
+async inputHelper(selector: any, text: any) {
+  try {
+      // Wait for the input field to be visible
+      await this.page.waitForSelector(selector, { state: 'visible', timeout: 5000 });
+
+      // Clear any existing text and then type the new text
+      await this.page.fill(selector, text);
+  } catch (error) {
+      throw new Error(`Failed to fill text into the input field. Selector: "${selector}", Text: "${text}". Error: "${error}"`);
+  }
+}
+
+
+
+
+
+/**
+ * Helper function to verify the background color of an element.
+ * @param {Locator} element - The Locator of the element whose color needs to be verified.
+ * @param {string} expectedColor - The expected color in any valid CSS color format (e.g., hex, rgb, rgba).
+ * @param {string} property - The CSS property to check, such as 'background-color' or 'color' (default is 'background-color').
+ * @returns {Promise<void>}
+ */
+async verifyElementColor(element: Locator, expectedColor: string, property: string = 'background-color'): Promise<void> {
+    try {
+        // Wait for the element to be visible
+        await element.waitFor({ state: 'visible' });
+
+        // Get the computed style for the specified color property
+        const color = await element.evaluate((el, property) => {
+            return window.getComputedStyle(el).getPropertyValue(property);
+        }, property);
+
+        // Verify that the actual color matches the expected color
+        expect(color.trim()).toBe(expectedColor);
+        console.log(`Color verification successful. ${property} is '${expectedColor}'.`);
+    } catch (error) {
+        console.error(`Color verification failed. Expected ${property} to be '${expectedColor}', but it did not match.`, error);
+        throw error;
+    }
+}
+
+
+
+
+/**
+ * Uploads an image file using the specified file input selector.
+ * @param {string} filePath - The file path of the image to be uploaded.
+ * @param {string} selector - The selector for the file input element on the page.
+ */
+async uploadImage(filePath: string, selector: string): Promise<void> {
+  console.log(`Uploading image from path: ${filePath}`);
+  
+  try {
+      // Wait for the file input element to be attached to the DOM
+      await this.page.waitForSelector(selector, { state: 'attached' });
+      
+      // Set the file path to the input element
+      const inputElement = await this.page.locator(selector);
+      await inputElement.setInputFiles(filePath);
+      
+      console.log('Image upload successful.');
+  } catch (error) {
+      throw new Error(`Image upload failed for selector: ${selector}. Error: ${error}`);
+  }
+}
+
+
+
+/**
+ * Helper function to click an element based on a selector specified in a JSON file.
+ * @param page - Playwright Page object.
+ * @param filePath - Path to the JSON file containing selectors.
+ * @param key - The key in the JSON file for the selector to click.
+ * @returns {Promise<void>}
+ */
+async clickFromJson(page: Page, filePath: string, key: string): Promise<void> {
+    try {
+        // Import JSON file
+        const selectors = await importJsonFile(filePath);
+
+        // Check if the key exists in the JSON data
+        if (!selectors[key]) {
+            throw new Error(`Selector for key '${key}' not found in JSON file.`);
+        }
+
+        // Click the element using the selector from JSON
+        const selector = selectors[key];
+        await page.click(selector);
+        console.log(`Clicked on element with selector: '${selector}' from key: '${key}'`);
+    } catch (error) {
+        console.error(`Failed to click element for key '${key}' in JSON file at path: ${filePath}`, error);
+        throw error;
+    }
+}
+
+
+
+/**
+ * Uploads a video file using the file chooser dialog.
+ * @param {Page} page - The Playwright Page instance.
+ * @param {Locator} uploadButton - The locator for the button that opens the file chooser dialog.
+ * @param {string} videoFilePath - The path to the video file to be uploaded.
+ * @param {number} timeout - The maximum wait time in milliseconds for the upload button to become visible (default is 5000 ms).
+ */
+async uploadVideo(
+    page: Page,
+    uploadButton: Locator,
+    videoFilePath: string,
+    timeout: number = 5000
+): Promise<void> {
+    try {
+        // Wait for the upload button to be visible
+        await expect(uploadButton).toBeVisible({ timeout });
+
+        // Trigger the file chooser dialog and upload the video file
+        const [fileChooser] = await Promise.all([
+            page.waitForEvent('filechooser'),
+            uploadButton.click(), // Open file chooser
+        ]);
+
+        await fileChooser.setFiles(videoFilePath);
+        console.log(`Video file "${videoFilePath}" has been successfully uploaded.`);
+    } catch (error) {
+        console.error(`Video upload failed for file: "${videoFilePath}". Error: ${error}`);
+        throw new Error(`Video upload failed for file: "${videoFilePath}". Error occurred: "${error}"`);
+    }
+}
+
+
+
+/**
+ * Clicks the active (enabled) button among a group of buttons.
+ * @param {Page} page - The Playwright page instance.
+ * @param {Locator} buttonsLocator - Locator for the group of buttons.
+ * @param {number} timeout - Optional timeout for waiting for the active button (default: 5000 ms).
+ */
+async clickActiveButton( buttonsLocator: Locator, timeout: number = 5000): Promise<void> {
+    const buttons = await buttonsLocator.elementHandles();
+    
+    for (const button of buttons) {
+        if (await button.isEnabled()) {
+            await button.click();
+            console.log('Active button clicked successfully.');
+            return;
+        }
+    }
+    
+    throw new Error('No active button found to click.');
+}
+
+/**
+ * Waits for the page to reach a network idle state, indicating all network requests have completed.
+ * @param {Page} page - The Playwright page instance.
+ * @param {number} timeout - Optional timeout to wait for network idle (default: 10000 ms).
+ */
+async  waitForNetworkIdle(page: Page, timeout: number = 10000): Promise<void> {
+  try {
+      // Wait until there are no more than 0 network requests for at least 500 ms
+      await page.waitForLoadState('networkidle', { timeout });
+      console.log('Page has reached network idle state.');
+  } catch (error) {
+      throw new Error(`Network idle state not reached within ${timeout} ms. Error: ${error}`);
+  }
+}
+
+
+/**
+ * Waits for a specified timeout duration.
+ * @param {number} timeout - The timeout duration in milliseconds.
+ */
+async  waitForTimeout(timeout: number): Promise<void> {
+  return new Promise(resolve => setTimeout(resolve, timeout));
+}
+
+
+
+/**
+ * Waits for all media elements (images, videos, audio) on the page to be fully loaded.
+ * @param {Page} page - The Playwright page instance.
+ * @param {number} timeout - Optional timeout to wait for all media elements to load (default: 10000 ms).
+ */
+async  waitForAllMediaElementsToLoad(page: Page, timeout: number = 10000): Promise<void> {
+    await page.waitForFunction(() => {
+        // Check if all <img> elements are fully loaded
+        const images = Array.from(document.querySelectorAll('img'));
+        const allImagesLoaded = images.every(img => img.complete && img.naturalHeight !== 0);
+
+        // Check if all <video> elements are fully loaded and ready to play
+        const videos = Array.from(document.querySelectorAll('video'));
+        const allVideosLoaded = videos.every(video => video.readyState >= 3); // `3` indicates "HAVE_FUTURE_DATA" in HTML5
+
+        // Check if all <audio> elements are fully loaded and ready to play
+        const audios = Array.from(document.querySelectorAll('audio'));
+        const allAudiosLoaded = audios.every(audio => audio.readyState >= 3);
+
+        return allImagesLoaded && allVideosLoaded && allAudiosLoaded;
+    }, { timeout });
+
+    console.log('All media elements have successfully loaded.');
+}
+
+
+
+
+/**
+ * Waits for all API requests and media (images, videos) to successfully load on the page.
+ * @param {Page} page - The Playwright page instance.
+ * @param {number} timeout - Optional timeout for waiting for all requests to complete (default: 10000 ms).
+ */
+async waitForAllResourcesToLoad(page: Page, timeout: number = 10000): Promise<void> {
+    const resourceTypesToWaitFor = ['xhr', 'fetch', 'image', 'media', 'stylesheet', 'font'];
+
+    let pendingRequests = 0;
+    let timeoutId: NodeJS.Timeout;
+
+    const onRequest = (request: any) => {
+        if (resourceTypesToWaitFor.includes(request.resourceType())) {
+            pendingRequests += 1;
+        }
+    };
+
+    const onRequestFinished = (request: any) => {
+        if (resourceTypesToWaitFor.includes(request.resourceType())) {
+            pendingRequests -= 1;
+        }
+    };
+
+    const onRequestFailed = (request: any) => {
+        if (resourceTypesToWaitFor.includes(request.resourceType())) {
+            pendingRequests -= 1;
+        }
+    };
+
+    page.on('request', onRequest);
+    page.on('requestfinished', onRequestFinished);
+    page.on('requestfailed', onRequestFailed);
+
+    try {
+        await new Promise<void>((resolve, reject) => {
+            const checkRequests = () => {
+                if (pendingRequests === 0) {
+                    clearTimeout(timeoutId);
+                    resolve();
+                }
+            };
+
+            timeoutId = setTimeout(() => {
+                reject(new Error(`Not all resources loaded within ${timeout} ms.`));
+            }, timeout);
+
+            page.on('requestfinished', checkRequests);
+            page.on('requestfailed', checkRequests);
+        });
+
+        console.log('All API requests and media have successfully loaded.');
+    } finally {
+        // Clean up listeners after completion or timeout
+        page.off('request', onRequest);
+        page.off('requestfinished', onRequestFinished);
+        page.off('requestfailed', onRequestFailed);
+    }
+}
+
+
+
+
+
+
+
+async waitForButtonToBeEnabled(locator: Locator, timeout: number = 30000): Promise<void> {
+    const startTime = Date.now();
+
+    while (true) {
+        const isEnabled = await locator.isEnabled();
+        if (isEnabled) {
+            return;
+        }
+
+        if (Date.now() - startTime > timeout) {
+            throw new Error(`Timeout: Button did not become enabled within ${timeout} ms`);
+        }
+
+        // Optional: Add a small delay to avoid tight looping
+        await new Promise(res => setTimeout(res, 100));
+    }
+}
+
+
+
+
+// Helper function to wait for page load and all API requests to complete
+async waitForPageAndAPIsToLoad(
+  page: Page,
+  apiUrls: string[],
+  timeout: number = 30000
+): Promise<void> {
+  const startTime = Date.now();
+
+  // Wait for the page to load completely
+  await page.waitForLoadState('networkidle', { timeout });
+
+  // Track pending API requests
+  const pendingApis = new Set<string>(apiUrls);
+
+  // Listen for successful API responses and remove URLs from the pending set
+  page.on('response', (response) => {
+    const url = response.url();
+    if (pendingApis.has(url) && response.ok()) {
+      pendingApis.delete(url);
+    }
+  });
+
+  // Wait for all API requests to be completed or timeout
+  while (pendingApis.size > 0) {
+    if (Date.now() - startTime > timeout) {
+      throw new Error(`Timeout: All APIs did not load within ${timeout} ms`);
+    }
+    // Small delay to avoid tight looping
+    await new Promise((res) => setTimeout(res, 100));
+  }
+}
+
+
+
+
+
+/**
+ * Helper function to verify that a background video has been successfully uploaded and is visible as the screen background.
+ * @param {Page} page - The Playwright Page instance.
+ * @param {Locator} videoElement - The locator for the video element that serves as the screen background.
+ * @param {number} timeout - The maximum wait time in milliseconds to verify the video element is playing (default is 5000 ms).
+ */
+async  verifyBackgroundVideo(
+  page: Page,
+  videoElement: Locator,
+  timeout: number = 5000
+): Promise<void> {
+  try {
+    // Wait for the video element to be visible
+    await expect(videoElement).toBeVisible({ timeout });
+
+    // Verify that the video element is loaded and ready to play
+    const isVideoPlaying = await page.evaluate((video) => {
+      return (
+        (video as HTMLVideoElement).readyState >= 2 && // Check if the video is at least "HAVE_CURRENT_DATA"
+        video !== null && !(video as HTMLVideoElement).paused && // Ensure the video is not paused
+        !(video as HTMLVideoElement).ended && // Ensure the video has not ended
+        (video as HTMLVideoElement).duration > 0 // Ensure the video has a valid duration
+      );
+    }, await videoElement.elementHandle());
+
+    if (isVideoPlaying) {
+      console.log("Background video is successfully loaded and playing.");
+    } else {
+      throw new Error("Background video is not playing or not properly loaded.");
+    }
+  } catch (error) {
+    console.error("Failed to verify the background video. Error:", error);
+    throw error;
+  }
+}
+
+
+
+
+/**
+ * Helper function to verify the background image URL of an element.
+ * @param {Locator} element - The Locator of the element to verify the background image.
+ * @param {string} expectedImageUrl - The expected URL (or part of the URL) of the background image.
+ * @returns {Promise<void>}
+ */
+async verifyBackgroundImage(
+    element: Locator,
+    expectedImageUrl: string
+): Promise<void> {
+    // Wait for the element to be visible
+    await element.waitFor({ state: 'visible' });
+
+    // Get the computed background-image URL from the element's CSS
+    const backgroundImageUrl = await element.evaluate((el) => {
+        const computedStyle = window.getComputedStyle(el);
+        return computedStyle.backgroundImage;
+    });
+
+    try {
+        // Check if the background-image URL includes the expected URL
+        expect(backgroundImageUrl).toContain(expectedImageUrl);
+        console.log(`Background image verification successful. URL: '${backgroundImageUrl}'`);
+    } catch (error) {
+        console.error(`Background image verification failed. Expected URL to contain '${expectedImageUrl}', but got '${backgroundImageUrl}'.`, error);
+        throw error;
+    }
+}
+
+/**
+ * Handles file download and verifies the file name.
+ * @param {Page} page - The Playwright page instance.
+ * @param {string} buttonSelector - Selector for the button that triggers the download.
+ * @param {string} expectedFileNamePattern - Expected pattern in the downloaded file's name.
+ * @param {string} downloadPath - Path where the file should be saved.
+ */
+async downloadFileAndVerify(
+  // buttonSelector: any,
+  expectedFileNamePattern: any,
+  downloadPath: any
+): Promise<void> {
+  console.log('Initiating file download...');
+  
+  const [download] = await Promise.all([
+    this.page.waitForEvent('download'),
+    this.page.locator("//span[normalize-space(text())='Export CSV']").nth(0).click(),
+  ]);
+
+  const suggestedFileName = download.suggestedFilename();
+  const filePath = `${downloadPath}/${suggestedFileName}`;
+
+  try {
+    console.log(`File suggested for download: ${suggestedFileName}`);
+
+    if (suggestedFileName.includes(expectedFileNamePattern)) {
+      await download.saveAs(filePath);
+      console.log(`File successfully downloaded to: ${filePath}`);
+    } else {
+      throw new Error(`Unexpected file name. Expected pattern: ${expectedFileNamePattern}, but got: ${suggestedFileName}`);
+    }
+  } catch (error) {
+    throw new Error(`File download failed. Ensure the file name contains '${expectedFileNamePattern}'. Error: ${error}`);
+  }
+}
+
+
+
+
+/**
+ * Uploads a file using the file chooser dialog.
+ * @param {string} filePath - The file path of the file to be uploaded.
+ */
+async uploadFileUsingFileChooser(filePath: any): Promise<void> {
+  console.log(`Uploading file from path: ${filePath}`);
+  
+  // Set up a one-time event listener for filechooser
+  this.page.once("filechooser", async (fileChooser) => {
+      try {
+          await fileChooser.setFiles([filePath]);
+          console.log('File upload successful.');          
+      } catch (error) {
+          throw new Error(`File upload failed. Error: ${error}`);
+      }
+  });
+}
+
+
+/**
+ * Uploads a file using the file chooser dialog.
+ * @param {string} filePath - The file path of the file to be uploaded.
+ */
+async uploadJSOnHelper(filePath: string): Promise<void> {
+  console.log(`Uploading file from path: ${filePath}`);
+  
+  // Set up a one-time event listener for filechooser
+  this.page.once("filechooser", async (fileChooser) => {
+      try {
+          await fileChooser.setFiles([filePath]);
+          console.log('File upload successful.');          
+      } catch (error) {
+          throw new Error(`File upload failed. Error: ${error}`);
+      }
+  });
+}
+
+
+
+
+
+/**
+ * Helper function to wait for a locator to reach a specified state.
+ * @param {Locator} locator - The Playwright Locator object to wait for.
+ * @param {string} state - The state to wait for ('visible', 'hidden', 'attached', or 'detached').
+ * @param {number} timeout - Optional timeout in milliseconds to wait for the locator (default is 5000 ms).
+ * @returns {Promise<void>}
+ */
+async waitForLocator(
+    locator: Locator,
+    state: 'visible' | 'hidden' | 'attached' | 'detached',
+    timeout: number = 10000
+): Promise<void> {
+    try {
+        await locator.waitFor({ state, timeout });
+        console.log(`Locator reached state: '${state}' within ${timeout} ms.`);
+    } catch (error) {
+        console.error(`Failed to reach state '${state}' for locator within ${timeout} ms.`, error);
+        throw Error;
+    }
+}
+
+
+async getDivByNumberText(page: Page, numberText: string): Promise<Locator> {
+  const locator = page.locator(`div:text("${numberText}")`);
+  await locator.waitFor(); // Wait for the element to be present before interacting
+  return locator;
+}
+
+
+
+/**
+ * Copies the current page URL to the clipboard.
+ * @param {Page} page - The Playwright Page instance from which the URL will be copied.
+ */
+async copyUrlToClipboard(): Promise<void> {
+    const url = this.page.url();
+    await this.page.evaluate(async (text) => {
+        await navigator.clipboard.writeText(text);
+    }, url);
+    console.log(`URL "${url}" has been copied to the clipboard.`);
+}
+
+/**
+ * Opens a new page and navigates to the URL in the clipboard.
+ * @param {BrowserContext} context - The Playwright BrowserContext instance to create a new page.
+ */
+async openClipboardUrl(): Promise<void> {
+    // Open a new page
+    const newPage = await this.page.context().newPage();
+
+    // Get the clipboard content (URL) and navigate to it
+    const clipboardUrl = await newPage.evaluate(async () => {
+        return await navigator.clipboard.readText();
+    });
+    
+    if (clipboardUrl) {
+        await newPage.goto(clipboardUrl);
+        console.log(`Navigated to the URL from clipboard: "${clipboardUrl}".`);
+    } else {
+        throw new Error("Clipboard does not contain a valid URL.");
+    }
+}
+
+
+
+
+/**
+ * Helper function to find a nested element within a container and click it.
+ * @param {Page} page - The Playwright Page object.
+ * @param {string} containerSelector - The CSS selector for the container element.
+ * @param {string} nestedSelector - The CSS selector for the nested dynamic element.
+ */
+async clickNestedElement(
+  page: Page,
+  containerSelector: any,
+  nestedSelector: any
+): Promise<void> {
+  try {
+    const elementHandle = await page.evaluateHandle(
+      ({ containerSelector, nestedSelector }) => {
+        const container = document.querySelector(containerSelector);
+        return container?.querySelector(nestedSelector);
+      },
+      { containerSelector, nestedSelector }
+    );
+
+    if (elementHandle) {
+      
+      console.log(`Clicked on nested element with selector: ${nestedSelector}`);
+    } else {
+      console.warn(`Nested element with selector '${nestedSelector}' not found in container '${containerSelector}'`);
+    }
+  } catch (error) {
+    console.error(`Failed to click nested element: ${error}`);
+  }
+}
+
+
+
+
+/**
+ * Repeatedly clicks on all visible elements matching the specified locator, then clicks the delete button for each.
+ * The function stops once no more matching elements are found on the page.
+ * @param {string} locatorString - The selector for the elements to be clicked.
+ * @param {Locator} deleteBtn - The locator for the delete button to be clicked after each element.
+ * @param {number} delay - The delay in milliseconds between each delete button click (default is 1000 ms).
+ */
+async clickAndDeleteAll(locatorString: string, delay: number = 1000): Promise<void> {
+  console.log(`Starting to click and delete all elements matching locator: ${locatorString}`);
+  
+  while (true) {
+      const elements = this.page.locator(locatorString);
+      const count = await elements.count();
+      const deleteBtn = this.page.locator("//span[normalize-space(text())='Delete']");
+      const deleteConfirmBtn = this.page.locator("//button[normalize-space(text())='Delete']");
+      const okBtn = this.page.locator("//button[normalize-space(text())='Ok']");
+
+      
+      // Exit the loop if no elements are found
+      if (count === 0) {
+          console.log("No more elements found to delete. Exiting loop.");
+          break;
+      }
+
+      // Loop through each visible element and perform the click and delete action
+      for (let i = 1; i < count; i++) {
+          const element = elements.nth(i);
+          if (await element.isVisible()) {
+              await element.click();
+              console.log(`Clicked element ${i + 1}/${count}`);
+              await deleteBtn.click({ button: "left", delay:100 });
+              await this.page.waitForTimeout(500); // Adjust as necessary
+              await deleteConfirmBtn.click({ button: "left", delay:100 });
+              await okBtn.click({ button: "left", delay:100 });
+
+
+              console.log(`Clicked delete button for element ${i + 1}/${count}`);
+
+              // Small delay to allow for page updates
+              await this.page.waitForTimeout(1000); // Adjust as necessary
+          }
+      }
+  }
+  console.log("Completed all deletions.");
+}
+
+async  deleteAllTheApp(): Promise<void> {
+
+  const elements = this.page.locator(`//span[text()='Actions']`).nth(0)  
+  const deleteBtn = this.page.locator(`//p[text()='Remove App']`).nth(0)
+  const deleteConfirmBtn = this.page.locator(`//span[text()='Yes']`).nth(0)
+  
+    
+
+  while (true) {
+    // const elements = page.locator(locatorString);
+    const count = await elements.count();
+
+    if (count === 0) {
+        break; // Exit the loop if no elements are found
+    }        
+    for (let i = 0; i < count; i++) {
+        const element = elements.nth(i);
+        if (await element.isVisible()) {
+          await element.click();
+          await this.page.waitForTimeout(500); // Adjust the timeout as necessary  
+            await deleteBtn.click({ button: "left", delay: 100 }) 
+            await this.page.waitForTimeout(500); // Adjust the timeout as necessary    
+
+            await deleteConfirmBtn.click({ button: "left", delay: 100 })       
+            await this.page.waitForTimeout(500); // Adjust the timeout as necessary    
+            // Add a small delay to allow for page updates or use waitForResponse or waitForSelector if more appropriate
+            await this.page.waitForTimeout(3000); // Adjust the timeout as necessary
+            
+        }
+    }
+}
+}
+
+async  stopAllGames(): Promise<void> {
+
+  const elements = this.page.frameLocator("iframe").locator(`//button[contains(text(), "Live")]`).nth(0)  
+  const deleteBtn = this.page.frameLocator("iframe").locator(`//button[contains(text(), "Yes")]`).nth(0)
+  
+    
+
+  while (true) {
+    // const elements = page.locator(locatorString);
+    const count = await elements.count();
+
+    if (count === 0) {
+        break; // Exit the loop if no elements are found
+    }        
+    for (let i = 0; i < count; i++) {
+        const element = elements.nth(i);
+        if (await element.isVisible()) {
+          await element.click();
+            await deleteBtn.click({ button: "left", delay: 100 })             
+            await this.page.waitForTimeout(500); // Adjust the timeout as necessary    
+            // Add a small delay to allow for page updates or use waitForResponse or waitForSelector if more appropriate
+            await this.page.waitForTimeout(1000); // Adjust the timeout as necessary
+            
+        }
+    }
+}
+}
+
+async  deleteHelperIframeImage(): Promise<void> {
+
+  const elements = this.page.frameLocator("iframe").locator(`//div[@class='MuiBox-root css-8eu9qp']//button[1]`).nth(0)  
+  const deleteBtn = this.page.frameLocator("iframe").locator("//span[normalize-space(text())='Delete']").last()
+  const okBtn = this.page.frameLocator("iframe").locator("//button[normalize-space(text())='Ok']");
+  const deleteConfirmBtn = this.page.frameLocator("iframe").locator("//button[normalize-space(text())='Delete']").last()
+    
+
+  while (true) {
+    // const elements = page.locator(locatorString);
+    const count = await elements.count();
+
+    if (count === 0) {
+        break; // Exit the loop if no elements are found
+    }        
+    for (let i = 0; i < count; i++) {
+        const element = elements.nth(i);
+        if (await element.isVisible()) {
+          await element.click();
+            await deleteBtn.click({ button: "left", delay: 100 })  
+            await deleteConfirmBtn.click({ button: "left", delay: 100 })
+            await okBtn.click({ button: "left", delay: 100 })
+            await this.page.waitForTimeout(500); // Adjust the timeout as necessary    
+            // Add a small delay to allow for page updates or use waitForResponse or waitForSelector if more appropriate
+            await this.page.waitForTimeout(1000); // Adjust the timeout as necessary
+            
+        }
+    }
+}
+}
+
+async  deleteAllMarketingBanner(locatorString: string): Promise<void> {
+
+  const elements = this.page.locator(locatorString).nth(0)
+  const threeDotBtn = this.page.locator("(//button[contains(@class,'MuiButtonBase-root MuiButton-root')])[1]");
+  const deleteBtn = this.page.locator("//span[normalize-space(text())='Delete']");
+  const okBtn = this.page.locator("//button[normalize-space(text())='Ok']");
+  const marketingMassage = this.page.locator("//p[normalize-space(text())='Uploaded']");
+  const deleteConfirmBtn = this.page.locator("//button[normalize-space(text())='Delete']");
+    
+
+  while (true) {
+    // const elements = page.locator(locatorString);
+    const count = await elements.count();
+
+    if (count === 0) {
+        break; // Exit the loop if no elements are found
+    }        
+    for (let i = 0; i < count; i++) {
+        const element = elements.nth(i);
+        if (await element.isVisible()) {
+            await threeDotBtn.click()
+            await deleteBtn.click({ button: "left", delay: 1000 })  
+            await deleteConfirmBtn.click({ button: "left", delay: 1000 })
+            await okBtn.click({ button: "left", delay: 1000 })
+            await this.page.waitForTimeout(500); // Adjust the timeout as necessary    
+            await marketingMassage.click({force: true})                                                   
+            // Add a small delay to allow for page updates or use waitForResponse or waitForSelector if more appropriate
+            await this.page.waitForTimeout(1000); // Adjust the timeout as necessary
+            
+        }
+    }
+}
+}
+
   async navigateToUrl(url: string): Promise<void> {
-    await this.webPage.goto(url);
+    await this.page.goto(url);
   }
 
   async verifyDragAndDrop(
@@ -718,17 +1326,17 @@ export default class WebHelper extends Helper {
     target: string,
     verifyText: string
   ): Promise<void> {
-    let draggable = await this.webPage.locator(source);
-    let droppable = await this.webPage.locator(target);
+    let draggable = await this.page.locator(source);
+    let droppable = await this.page.locator(target);
     await draggable.hover();
-    await this.webPage.mouse.down();
+    await this.page.mouse.down();
     await droppable.hover();
-    await this.webPage.mouse.up();
+    await this.page.mouse.up();
     await expect(droppable).toContainText(verifyText);
   }
 
   async verifyToolTip(locator: string, hoverText: string): Promise<void> {
-    let el = await this.webPage.locator(locator);
+    let el = await this.page.locator(locator);
     el.hover();
     await expect(el).toContainText(hoverText);
   }
@@ -737,9 +1345,43 @@ export default class WebHelper extends Helper {
     //TBD
   }
 
-  async verifyNewTab(newTabUrlExpected: string): Promise<void> {
-    //TBD
+  
+/**
+ * Helper function to handle a new page after clicking a button.
+ * @param context - The Playwright BrowserContext.
+ * @param page - The current Playwright Page where the click occurs.
+ * @param selector - The selector for the button or element that opens the new page.
+ * @param timeout - Optional timeout in milliseconds to wait for the new page (default is 10 seconds).
+ * @returns {Promise<Page>} - The new page object.
+ */
+async handleNewPageAfterClick(
+  context: BrowserContext,
+  page: Page,
+  selector: any,
+  timeout: number = 10000
+): Promise<Page> {
+
+  try {
+
+      // Wait for the new page to open
+  const [newPage] = await Promise.all([
+    context.waitForEvent("page", { timeout }),  // Waits for a new page to open
+    selector.click()                       // Clicks the button to open the new page
+]);
+
+// Ensure the new page has loaded content (optional)
+await newPage.waitForLoadState('load');
+console.log(`New page opened with URL: ${newPage.url()}`);
+
+return newPage;
+    
+  } catch (error) {
+      console.error(`Error occurred while handling new page: ${error}`);
+      throw error;
+    
   }
+
+}
 
   async verifyNewWindow(newWindowUrlExpected: string): Promise<void> {
     //TBD
@@ -758,7 +1400,7 @@ export default class WebHelper extends Helper {
    */
   async assertPageURL(url: string): Promise<void> {
     console.log(`Asserts that page url is ${url}.`);
-    await expect(this.webPage).toHaveURL(url);
+    await expect(this.page).toHaveURL(url);
   }
 
   /**
@@ -768,7 +1410,7 @@ export default class WebHelper extends Helper {
    */
   async assertPageTitle(title: string): Promise<void> {
     console.log(`Asserts that page title is ${title}.`);
-    await expect(this.webPage).toHaveTitle(title);
+    await expect(this.page).toHaveTitle(title);
   }
   /**
    * The function opens a new tab in a browser context, navigates to a specified URL, and returns the
@@ -784,15 +1426,236 @@ export default class WebHelper extends Helper {
    * screenshot image file. If no value is provided, it defaults to "screenshot.png".
    */
   async takeScreenshot(imageName: string = `screenshot.png`): Promise<void> {
-    await this.webPage.screenshot({ path: `${imageName}`, fullPage: true });
+    await this.page.screenshot({ path: `${imageName}`, fullPage: true });
   }
+  
+  
+
+/**
+ * Helper function to perform a full-page visual screenshot comparison.
+ * @param {Page} page - The Playwright Page object.
+ * @param {string} screenshotName - The name of the screenshot file for comparison.
+ * @param {number} maxDiffPixels - The maximum number of pixels allowed to differ between screenshots.
+ */
+async compareFullPageScreenshot(
+  page: Page,
+  screenshotName: string,
+  maxDiffPixels: number = 100,
+  
+): Promise<void> {
+  // Capture a full-page screenshot
+  const screenshotBuffer = await page.screenshot({ fullPage: true });
+
+  // Perform the visual comparison using Playwright's expect function
+  try {
+    await expect.soft(screenshotBuffer).toMatchSnapshot(`${screenshotName}.png`, {
+      maxDiffPixels, // Maximum allowed pixel differences
+    });
+    console.log(`Full-page visual comparison for '${screenshotName}' successful.`);
+  } catch (error) {
+    console.error(`Full-page visual comparison for '${screenshotName}' failed.`, error);
+    throw error;
+  }
+}
+
+
+
+
+
+/**
+ * Helper function to upload a font file and verify that it's applied to a sample text.
+ * @param {Page} page - The Playwright Page object.
+ * @param {Locator} uploadButton - The Locator for the font upload button/input.
+ * @param {string} fontFilePath - The path to the font file to be uploaded.
+ * @param {Locator} textElement - The Locator of a text element to verify the font on.
+ * @param {string} expectedFontFamily - The expected font family name after the upload.
+ * @param {number} timeout - Optional timeout in milliseconds to wait for the font to be applied (default is 5000 ms).
+ * @returns {Promise<void>}
+ */
+async uploadFontAndVerify(
+    page: Page,
+    uploadButton: Locator,
+    fontFilePath: string,    
+    timeout: number = 5000
+): Promise<void> {
+
+  try {
+    console.log(`Uploading font from path: ${fontFilePath}`);
+
+    // Wait for the upload button to be visible and trigger the file chooser
+    await uploadButton.waitFor({ state: 'visible' });
+    await page.once('filechooser', async (fileChooser) => {
+        await fileChooser.setFiles([fontFilePath]);
+    });
+
+    await uploadButton.click(); // Trigger the file chooser dialog
+
+    
+  } catch (error) {
+    throw new Error(`Font '${uploadButton}' was not uploaded within ${timeout} ms.`);
+    
+  }    
+   
+}
+
+
+
+
+/**
+ * Helper function to verify the uploaded video on a page.
+ * @param page - The Playwright Page object.
+ * @param videoSelector - The CSS selector for the video element.
+ * @param expectedVideoSrc - The expected URL or partial URL of the uploaded video file.
+ */
+async verifyUploadedVideo(
+  page: Page,
+  videoSelector: string,
+  expectedVideoSrc: string
+): Promise<void> {
+  // Ensure the video element is visible
+  const videoElement = page.locator(videoSelector);
+  await expect(videoElement).toBeVisible({ timeout: 5000 });
+
+  // Verify the video source URL matches the expected URL or part of it
+  const videoSourceUrl = await videoElement.evaluate((video: HTMLVideoElement) => video.currentSrc);
+  expect(videoSourceUrl).toContain(expectedVideoSrc);
+
+  // Optional: Play a short segment of the video to confirm it loads and plays
+  await videoElement.evaluate((video: HTMLVideoElement) => video.play());
+  await page.waitForTimeout(1000); // Play for 1 second
+  await videoElement.evaluate((video: HTMLVideoElement) => video.pause());
+
+  console.log(`Video verification successful for source: ${expectedVideoSrc}`);
+}
+
+
+
+
+/**
+ * Helper function to perform a visual screenshot comparison for a specific element.
+ * @param {Locator} element - The Locator of the specific element to capture.
+ * @param {string} screenshotName - The name of the screenshot file for comparison.
+ * @param {number} maxDiffPixels - The maximum number of pixels allowed to differ between screenshots.
+ */
+async compareElementScreenshot(
+  element: Locator,
+  screenshotName: string,
+  maxDiffPixels: number = 500,
+): Promise<void> {
+  // Capture a screenshot of the specified element
+  const screenshotBuffer = await element.screenshot();
+
+  // Perform the visual comparison using Playwright's expect function
+  try {
+    await expect.soft(screenshotBuffer).toMatchSnapshot(`${screenshotName}.png`, {
+      maxDiffPixels,// Maximum allowed pixel differences
+    });
+    console.log(`Element visual comparison for '${screenshotName}' successful.`);
+  } catch (error) {
+    console.error(`Element visual comparison for '${screenshotName}' failed.`, error);
+    throw error;
+  }
+}
+
+
+
+
+
+
+/**
+ * Helper function to click a button that copies a link and save the copied link to a JSON file.
+ * @param {Page} page - The Playwright Page object.
+ * @param {Locator} copyButton - The Locator for the copy button.
+ * @param {string} filePath - The file path to save the copied link.
+ * @returns {Promise<void>}
+ */
+async clickToCopyAndSave(page: Page, copyButton: Locator, filePath: string): Promise<void> {
+    try {
+        // Clear the clipboard before clicking the copy button
+        await page.evaluate(() => navigator.clipboard.writeText(''));
+
+        // Click the copy button
+        await copyButton.click();
+        console.log('Copy button clicked.');
+
+        // Wait for clipboard content to be available
+        await page.waitForTimeout(500); // Adjust timing if needed
+
+        // Get copied text from clipboard
+        const copiedText = await page.evaluate(() => navigator.clipboard.readText());
+        
+        if (!copiedText) {
+            throw new Error('No text copied to clipboard.');
+        }
+
+        console.log(`Copied link: ${copiedText}`);
+
+        // Save the copied link to a JSON file
+        fs.writeFileSync(filePath, JSON.stringify({ STORE_LINK: copiedText }, null, 2));
+        console.log(`Copied link saved to: ${filePath}`);
+    } catch (error) {
+        console.error(`Failed to copy and save link: ${error}`);
+        throw error;
+    }
+}
+
+
+
+
+
+
+/**
+ * Helper function to interact with a checkbox element.
+ * @param {Locator} checkbox - The Locator of the checkbox element.
+ * @param {boolean} shouldCheck - Whether to check or uncheck the checkbox.
+ * @returns {Promise<void>}
+ */
+async handleCheckbox(checkbox: Locator, shouldCheck: boolean): Promise<void> {
+    const isChecked = await checkbox.isChecked();
+
+    try {
+        // Check or uncheck the checkbox based on shouldCheck parameter
+        if (shouldCheck && !isChecked) {
+            await checkbox.check();
+            console.log('Checkbox is now checked.');
+        } else if (!shouldCheck && isChecked) {
+            await checkbox.uncheck();
+            console.log('Checkbox is now unchecked.');
+        } else {
+            console.log(`Checkbox is already in the desired state: ${shouldCheck ? 'checked' : 'unchecked'}.`);
+        }
+    } catch (error) {
+        console.error(`Failed to interact with checkbox: ${error}`);
+        throw error;
+    }
+}
+
+/**
+ * Helper function to verify the state of a checkbox.
+ * @param {Locator} checkbox - The Locator of the checkbox element.
+ * @returns {Promise<boolean>} - Returns true if the checkbox is checked, otherwise false.
+ */
+async isCheckboxChecked(checkbox: Locator): Promise<boolean> {
+    try {
+        const isChecked = await checkbox.isChecked();
+        console.log(`Checkbox is ${isChecked ? 'checked' : 'unchecked'}.`);
+        return isChecked;
+    } catch (error) {
+        console.error(`Failed to verify checkbox state: ${error}`);
+        throw error;
+    }
+}
+
+
+
+
 
   /**
    * The function takes a locator and an optional image name as parameters, finds the element on a web
    * page using the locator, and takes a screenshot of the element.
    * @param {string} locator - The `locator` parameter is a string that represents the element you want
    * to take a screenshot of. It can be a CSS selector, an XPath expression, or any other valid locator
-   * strategy supported by the `this.webPage.locator` method.
+   * strategy supported by the `this.page.locator` method.
    * @param {string} imageName - The `imageName` parameter is a string that specifies the name of the
    * screenshot image file. If no value is provided, it defaults to "screenshot.png".
    */
@@ -800,7 +1663,7 @@ export default class WebHelper extends Helper {
     locator: string,
     imageName: string = `screenshot.png`
   ): Promise<void> {
-    const el = await this.webPage.locator(locator);
+    const el = await this.page.locator(locator);
     await el.screenshot({ path: `${imageName}` });
   }
 
@@ -816,10 +1679,12 @@ export default class WebHelper extends Helper {
     console.log(
       `Asserts that element ${target} contains text ${expectedText}.`
     );
-    const el = await this.webPage.locator(target);
+    const el = await this.page.locator(target);
     await expect(el).toContainText(expectedText);
   }
 
+
+  
   /**
    * The function checks if an element on a web page has the expected text.
    * @param {string} target - The target parameter is a string that represents the locator for the
@@ -831,21 +1696,76 @@ export default class WebHelper extends Helper {
     console.log(
       `Asserts that element ${target} has expected text ${expectedText}.`
     );
-    const el = await this.webPage.locator(target);
+    const el = await this.page.locator(target);
     await expect(el).toHaveText(expectedText);
   }
 
+  
+
   /**
-   * The function asserts that a specified element is visible on a web page.
-   * @param {string} target - The `target` parameter is a string that represents the locator of the
-   * element you want to check for visibility. It could be a CSS selector, an XPath expression, or any
-   * other valid locator that can be used to identify the element on the web page.
+   * Helper function to assert that a specific element is visible on the page.
+   * @param {Locator} element - The Locator of the element to check for visibility.
+   * @param {number} timeout - Optional timeout in milliseconds to wait for the element to be visible (default: 5000 ms).
+   * @returns {Promise<void>}
    */
-  async elementIsVisible(target: string): Promise<void> {
-    console.log(`Asserts that element ${target} is visible.`);
-    expect(await this.webPage.locator(target)).toBeVisible();
+  async expectToBeVisible(element: Locator, timeout: number = 10000): Promise<void> {
+      try {
+          // Wait for the element to be visible
+          await element.waitFor({ state: 'visible', timeout });
+          
+          // Assert that the element is visible
+          await expect.soft(element).toBeVisible();
+          console.log('Element is visible on the page.');
+      } catch (error) {
+          // console.error(`Element is not visible within ${timeout} ms.`, error);
+          throw new Error(`Expected element to be visible, but it was not.`);
+      }
   }
 
+  /**
+   * Helper function to assert that a specific element is visible on the page.
+   * @param {Locator} element - The Locator of the element to check for visibility.
+   * @param {number} timeout - Optional timeout in milliseconds to wait for the element to be visible (default: 5000 ms).
+   * @returns {Promise<void>}
+   */
+  async expectNotToBeVisible(element: Locator, timeout: number = 10000): Promise<void> {
+    try {        
+        // Assert that the element is not visible
+        await expect.soft(element).not.toBeVisible();
+        console.log('Element not to be visible on the page.');
+    } catch (error) {
+        console.error(`Element is not visible within ${timeout} ms.`, error);
+        throw new Error(`Expected element to be Disabled, but it was not.`);
+    }
+}
+
+  
+
+/**
+ * Helper function to assert that a button is either hidden or disabled.
+ * @param {Locator} button - The Locator of the button to check.
+ * @param {number} timeout - Optional timeout in milliseconds to wait for the button to reach the expected state (default: 5000 ms).
+ * @returns {Promise<void>}
+ */
+async expectButtonToBeHiddenOrDisabled(button: Locator, timeout: number = 5000): Promise<void> {
+    try {
+        // Wait for the button to be either hidden or disabled
+        const isVisible = await button.isVisible({ timeout });
+        const isEnabled = await button.isEnabled({ timeout });
+        
+        // Assert that the button is either hidden or disabled
+        if (!isVisible || !isEnabled) {
+            console.log('Button is either hidden or disabled as expected.');
+        } else {
+            throw new Error('Button is visible and enabled, but expected it to be hidden or disabled.');
+        }
+    } catch (error) {
+        console.error(`Button did not reach the expected state within ${timeout} ms.`, error);
+        throw error;
+    }
+}
+
+  
   /**
    * The function asserts that a specified element is not visible on a web page.
    * @param {string} target - The target parameter is a string that represents the locator or selector
@@ -854,7 +1774,7 @@ export default class WebHelper extends Helper {
    */
   async elementIsNotVisible(target: string): Promise<void> {
     console.log(`Asserts that element ${target} is not visible.`);
-    expect(await this.webPage.locator(target)).toBeHidden();
+    expect(await this.page.locator(target)).toBeHidden();
   }
 
   async elementHasAttributeAndValue(
@@ -868,24 +1788,62 @@ export default class WebHelper extends Helper {
     //expect(await (target).toHaveAttribute(attribute, attributeVal));
   }
 
-  /**
-   * The `blockRequest` function blocks all requests in a given browser context that do not start with a
-   * specified request name.
-   * @param {BrowserContext} context - The `context` parameter is an instance of a `BrowserContext`
-   * object. It represents a browser context in Puppeteer, which is a container for a set of pages and
-   * allows for fine-grained control over browser behavior.
-   * @param {string} requestName - The `requestName` parameter is a string that represents the name of
-   * the request you want to block.
-   * Call this method in your tests
-   */
-  async blockRequest(context: BrowserContext, requestName: string) {
-    await context.route("**/*", (request) => {
-      request.request().url().startsWith(`${requestName}`)
-        ? request.abort()
-        : request.continue();
-      return;
-    });
-  }
+
+  
+
+/**
+ * Helper function to close any open browser contexts.
+ * @param {Browser | undefined} browser - The Browser instance to check and close.
+ * @returns {Promise<void>}
+ */
+async closeBrowserIfOpen(browser?: Browser): Promise<void> {
+    try {
+        if (browser) {
+            // Check if there are any open contexts in the browser
+            const contexts = browser.contexts();
+            if (contexts.length > 0) {
+                // Close all contexts
+                await Promise.all(contexts.map(context => context.close()));
+                console.log('All open browser contexts have been closed.');
+            } else {
+                console.log('No open browser contexts to close.');
+            }
+
+            // Close the browser if it is still open
+            await browser.close();
+            console.log('Browser closed successfully.');
+        } else {
+            console.log('No browser instance provided or browser is already closed.');
+        }
+    } catch (error) {
+        console.error('Error while trying to close the browser:', error);
+        throw error;
+    }
+}
+
+
+
+/**
+ * Helper function to close all open browser contexts.
+ * @param {Browser} browser - The Browser instance to close contexts for.
+ * @returns {Promise<void>}
+ */
+async closeAllBrowserContexts(browser: Browser): Promise<void> {
+    try {
+      const contexts = await browser.contexts();
+      if (contexts.length > 1) {
+              await contexts[1].close();
+              // await contexts[0].close();
+      }
+        
+        // After closing all contexts, close the browser itself
+        await browser.close();
+        console.log('All browser contexts and the browser have been closed successfully.');
+    } catch (error) {
+        // console.error('Error while closing browser contexts:', error);
+    }
+}
+
 
   /**
    * The function will setup a listener for alert box, if dialog appears during the test then automatically accepting them.
@@ -893,7 +1851,7 @@ export default class WebHelper extends Helper {
    */
   async acceptAlertBox(): Promise<void> {
     console.log(`Handle Alert Box by clicking on Ok button`);
-    this.webPage.on("dialog", async (dialog) => dialog.dismiss());
+    this.page.on("dialog", async (dialog) => dialog.dismiss());
   }
 
   /**
@@ -902,12 +1860,12 @@ export default class WebHelper extends Helper {
    */
   async acceptConfirmBox(): Promise<void> {
     console.log(`Accept Confirm Box by clicking on Ok button`);
-    this.webPage.on("dialog", async (dialog) => dialog.accept());
+    this.page.on("dialog", async (dialog) => dialog.accept());
   }
 
   async dismissConfirmBox(): Promise<void> {
     console.log(`Dismiss Confirm Box by clicking on Cancel button`);
-    this.webPage.on("dialog", async (dialog) => dialog.dismiss());
+    this.page.on("dialog", async (dialog) => dialog.dismiss());
   }
 
   /**
@@ -916,7 +1874,7 @@ export default class WebHelper extends Helper {
    */
   async handlePromptBox(txtVal: string): Promise<void> {
     console.log(`Enter text message in Prompt Box and click on Ok button`);
-    this.webPage.on("dialog", async (dialog) => dialog.accept(txtVal));
+    this.page.on("dialog", async (dialog) => dialog.accept(txtVal));
   }
 
   waitForDialogMessage(page: Page) {
@@ -934,7 +1892,7 @@ export default class WebHelper extends Helper {
     console.log(`Read text message from Alert box`);
     let dialogMessage: string;
     dialogMessage = await this.waitForDialogMessage(
-      this.webPage
+      this.page
     ).then.toString();
     console.log(dialogMessage);
     return dialogMessage;
@@ -947,7 +1905,7 @@ export default class WebHelper extends Helper {
    * or identifier of the frame you want to retrieve.
    */
   async getFrame(frameLocator: string) {
-    return this.webPage.frameLocator(frameLocator);
+    return this.page.frameLocator(frameLocator);
   }
 
   /**
@@ -958,7 +1916,7 @@ export default class WebHelper extends Helper {
    * @returns a Promise that resolves to a string.
    */
   async getStringFromShadowDom(locator: string): Promise<string> {
-    return (await this.webPage.locator(locator).textContent()) as string;
+    return (await this.page.locator(locator).textContent()) as string;
   }
 
   /**
@@ -966,7 +1924,7 @@ export default class WebHelper extends Helper {
    * download event to occur.
    * @param {string} locator - The locator parameter is a string that represents the selector used to
    * locate the element on the web page that triggers the file download. It could be an ID, class name,
-   * CSS selector, or any other valid selector that can be used with the `this.webPage.locator()`
+   * CSS selector, or any other valid selector that can be used with the `this.page.locator()`
    * method to locate the element
    * @param {string} expectedFileName - The expectedFileName parameter is a string that represents the
    * name of the file that is expected to be downloaded.
@@ -980,39 +1938,15 @@ export default class WebHelper extends Helper {
   ) {
     //start download
     const [download] = await Promise.all([
-      this.webPage.waitForEvent("download"),
-      this.webPage.locator(locator).click(),
+      this.page.waitForEvent("download"),
+      this.page.locator(locator).click(),
     ]);
 
     await download.saveAs(savePath);
     return download;
   }
 
-  /**
-   * The function uploads a file to a web page using the specified file path, file upload locator, and
-   * upload button locator.
-   * @param {string} filePath - The file path is the path to the file that you want to upload. It
-   * should be a string that specifies the location of the file on your computer.
-   * @param {string} fileUploadLocator - The fileUploadLocator parameter is a string that represents
-   * the locator of the file upload input element on the web page. This locator is used to identify the
-   * element where the file will be uploaded to.
-   * @param {string} uploadBtnLocator - The `uploadBtnLocator` parameter is a string that represents
-   * the locator of the upload button on the web page. It is used to locate and interact with the
-   * upload button element on the page.
-   */
-  async uploadFile(
-    filePath: string,
-    fileUploadLocator: string,
-    uploadBtnLocator: string
-  ) {
-    if (!fs.existsSync(filePath)) {
-      console.log(`File ${filePath} does not exist`);
-      throw new Error(`File not found :${filePath}`);
-    }
-
-    await this.webPage.setInputFiles(`${fileUploadLocator}`, filePath);
-    await this.webPage.locator(`${uploadBtnLocator}`).click();
-  }
+  
 
   /**
    * The function intercepts a specific route in a browser context, logs the request and response, and
@@ -1047,20 +1981,38 @@ export default class WebHelper extends Helper {
   async verifyValueFromUi(): Promise<void> {}
 
   async getAttribute(locator: string, attributeName: string): Promise<string> {
-    const value = await this.webPage
+    const value = await this.page
       .locator(locator)
       .getAttribute(attributeName);
     return value ?? "";
   }
 
   async getText(locator: string): Promise<string> {
-    const value = await this.webPage.locator(locator).textContent();
+    const value = await this.page.locator(locator).textContent();
     return value ?? "";
   }
 
   async press(key: string): Promise<void> {
-    await this.webPage.keyboard.press(key);
+    await this.page.keyboard.press(key);
   }
 
-  
+  async clearInputField(locator: Locator): Promise<void> {
+    try {
+        await locator.click(); // Focus on the input field
+        await locator.press('Control+A'); // Select all text (or Command+A on macOS)
+        await locator.press('Backspace'); // Delete the selected content
+    } catch (error) {
+        throw new Error(`Failed to clear input field: ${error}`);
+    }
+  }
+
 }
+
+
+
+function importJsonFile(filePath: string): Record<string, string> {
+  const fullPath = path.resolve(filePath);
+  const jsonData = fs.readFileSync(fullPath, 'utf-8');
+  return JSON.parse(jsonData);
+}
+

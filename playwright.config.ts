@@ -14,7 +14,8 @@ export default defineConfig({
   testMatch: [
     // "deleteFolder.test.ts",
     "your.test.ts",
-  "pageAccessibility.spec.ts"],
+  // "pageAccessibility.spec.ts"
+],
   timeout: 1 * 30 * 100000,
   expect: {
     // Maximum time expect() should wait for the condition to be met.

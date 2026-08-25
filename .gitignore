@@ -1,1 +1,28 @@
-node_modules
+# dependencies
+node_modules/
+
+# playwright / test output
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
+allure-results/
+allure-report/
+*-snapshots/
+trace.zip
+*.webm
+
+# secrets & auth state
+.env
+.env.*
+!.env.example
+.auth/
+auth.json
+*.pem
+*.key
+
+# editor / os
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
